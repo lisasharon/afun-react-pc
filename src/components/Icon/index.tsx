@@ -209,6 +209,13 @@ export function Icon({ name, size = 20, className }: IconProps) {
           <path d="M21 12a8 8 0 0 1-8 8H6l-4 3V12a8 8 0 1 1 19 0z" />
         </svg>
       )
+    case 'ticket':
+      return (
+        <svg {...props}>
+          <path d="M4 8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1a2 2 0 0 0 0 4v1a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-1a2 2 0 0 0 0-4V8z" />
+          <path d="M9 8v10M12 10h4M12 14h3" />
+        </svg>
+      )
     case 'download':
       return (
         <svg {...props}>

@@ -172,16 +172,18 @@
   gap: 4px;
 }
 
-.message-list li {
+.message-item {
   display: flex;
   gap: 10px;
+  width: 100%;
   padding: 12px 10px;
   border-radius: var(--radius-sm);
+  text-align: left;
   cursor: pointer;
   transition: background 0.2s;
 }
 
-.message-list li:hover {
+.message-item:hover {
   background: var(--bg-hover);
 }
 
@@ -216,6 +218,112 @@
   height: 160px;
   font-size: 13px;
   color: var(--text-dim);
+}
+
+.msg-detail-root {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.msg-detail-mask {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  animation: msg-mask-in 0.25s ease;
+}
+
+.msg-detail-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(420px, 100%);
+  max-height: min(80vh, 560px);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+  animation: msg-dialog-in 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.msg-detail-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.msg-detail-header h3 {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.msg-detail-time {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.msg-detail-content {
+  margin-top: 16px;
+  flex: 1;
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  white-space: pre-wrap;
+}
+
+.msg-detail-footer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.msg-detail-ok {
+  padding: 9px 20px;
+  border-radius: var(--radius-sm);
+  background: var(--green);
+  color: #0a120c;
+  font-size: 13px;
+  font-weight: 700;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.msg-detail-ok:hover {
+  background: #4adb5a;
+}
+
+.msg-detail-ok:active {
+  transform: scale(0.97);
+}
+
+@keyframes msg-mask-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes msg-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 @media (max-width: 1100px) {
