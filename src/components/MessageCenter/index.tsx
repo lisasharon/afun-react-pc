@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Icon } from '@/components/Icon'
 import {
   countUnread,
@@ -7,11 +8,11 @@ import {
 } from '@/types/message'
 import './index.css'
 
-const tabs: { id: MessageType; label: string }[] = [
-  { id: 'notify', label: '通知' },
-  { id: 'mail', label: '站内信' },
-  { id: 'announce', label: '公告' },
-  { id: 'feedback', label: '有奖反馈' },
+const tabs: { id: MessageType; labelKey: string }[] = [
+  { id: 'notify', labelKey: 'message.notify' },
+  { id: 'mail', labelKey: 'message.mail' },
+  { id: 'announce', labelKey: 'message.announce' },
+  { id: 'feedback', labelKey: 'message.feedback' },
 ]
 
 type MessageCenterProps = {
@@ -31,6 +32,7 @@ export function MessageCenter({
   onTabChange,
   onMarkRead,
 }: MessageCenterProps) {
+  const { t } = useTranslation()
   const [activeMessage, setActiveMessage] = useState<MessageItem | null>(null)
 
   useEffect(() => {
@@ -47,6 +49,9 @@ export function MessageCenter({
   }, [activeMessage])
 
   const list = messages.filter((m) => m.type === activeTab)
+  const activeTabLabel = t(
+    tabs.find((tab) => tab.id === activeTab)?.labelKey ?? 'message.notify',
+  )
 
   const openMessage = (message: MessageItem) => {
     setActiveMessage(message)
@@ -65,18 +70,18 @@ export function MessageCenter({
       <aside
         className={`message-center ${open ? 'open' : ''}`}
         aria-hidden={!open}
-        aria-label="消息中心"
+        aria-label={t('message.title')}
       >
         <div className="message-header">
           <h2>
             <Icon name="bell" size={18} />
-            消息中心
+            {t('message.title')}
           </h2>
           <button
             type="button"
             className="message-close"
             onClick={onClose}
-            aria-label="关闭消息中心"
+            aria-label={t('message.close')}
           >
             <Icon name="close" size={18} />
           </button>
@@ -94,7 +99,7 @@ export function MessageCenter({
                 className={`message-tab ${activeTab === tab.id ? 'active' : ''}`}
                 onClick={() => onTabChange(tab.id)}
               >
-                {tab.label}
+                {t(tab.labelKey)}
                 {unread > 0 ? <span className="tab-badge">{unread}</span> : null}
               </button>
             )
@@ -113,8 +118,12 @@ export function MessageCenter({
                   >
                     <span className={`msg-dot ${message.read ? 'read' : ''}`} />
                     <div>
-                      <p className="msg-title">{message.title}</p>
-                      <p className="msg-time">{message.time}</p>
+                      <p className="msg-title">
+                        {t(`messages.${message.id}.title`)}
+                      </p>
+                      <p className="msg-time">
+                        {t(`messages.${message.id}.time`)}
+                      </p>
                     </div>
                   </button>
                 </li>
@@ -122,7 +131,7 @@ export function MessageCenter({
             </ul>
           ) : (
             <div className="message-empty">
-              暂无{tabs.find((t) => t.id === activeTab)?.label}
+              {t('common.empty', { name: activeTabLabel })}
             </div>
           )}
         </div>
@@ -138,21 +147,27 @@ export function MessageCenter({
             aria-labelledby="msg-detail-title"
           >
             <div className="msg-detail-header">
-              <h3 id="msg-detail-title">{activeMessage.title}</h3>
+              <h3 id="msg-detail-title">
+                {t(`messages.${activeMessage.id}.title`)}
+              </h3>
               <button
                 type="button"
                 className="message-close"
                 onClick={closeDetail}
-                aria-label="关闭详情"
+                aria-label={t('message.closeDetail')}
               >
                 <Icon name="close" size={18} />
               </button>
             </div>
-            <p className="msg-detail-time">{activeMessage.time}</p>
-            <div className="msg-detail-content">{activeMessage.content}</div>
+            <p className="msg-detail-time">
+              {t(`messages.${activeMessage.id}.time`)}
+            </p>
+            <div className="msg-detail-content">
+              {t(`messages.${activeMessage.id}.content`)}
+            </div>
             <div className="msg-detail-footer">
               <button type="button" className="msg-detail-ok" onClick={closeDetail}>
-                我知道了
+                {t('common.gotIt')}
               </button>
             </div>
           </div>

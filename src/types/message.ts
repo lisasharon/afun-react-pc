@@ -5,9 +5,6 @@ export type MessageType = (typeof MESSAGE_TYPES)[number]
 export type MessageItem = {
   id: string
   type: MessageType
-  title: string
-  time: string
-  content: string
   read?: boolean
 }
 

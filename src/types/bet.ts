@@ -1,9 +1,5 @@
 export type BetSlipItem = {
   id: string
-  league: string
-  match: string
-  market: string
-  selection: string
   odds: number
 }
 

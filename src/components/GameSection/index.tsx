@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { categories, games } from '@/mock/games'
 import { Icon } from '@/components/Icon'
 import './index.css'
@@ -26,12 +27,22 @@ const coverStyles: Record<string, string> = {
     'radial-gradient(circle at 70% 40%, #60a5fa, transparent 45%), linear-gradient(160deg, #0a1a3a, #050a1a)',
 }
 
+const categoryLabelKeys: Record<string, string> = {
+  lobby: 'home.lobby',
+  providers: 'home.providers',
+  slots: 'home.slots',
+  fishing: 'home.fishing',
+  cards: 'home.cards',
+  lottery: 'home.lottery',
+}
+
 export function GameSection() {
+  const { t } = useTranslation()
   const [activeCategory, setActiveCategory] = useState('lobby')
   const [query, setQuery] = useState('')
 
   const filtered = games.filter((g) =>
-    g.name.toLowerCase().includes(query.trim().toLowerCase()),
+    t(`games.${g.id}`).toLowerCase().includes(query.trim().toLowerCase()),
   )
 
   return (
@@ -40,14 +51,14 @@ export function GameSection() {
         <Icon name="search" size={18} />
         <input
           type="search"
-          placeholder="搜索游戏"
+          placeholder={t('home.searchGames')}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          aria-label="搜索游戏"
+          aria-label={t('home.searchGames')}
         />
       </div>
 
-      <div className="categories" role="tablist" aria-label="游戏分类">
+      <div className="categories" role="tablist" aria-label={t('home.gameCategories')}>
         {categories.map((cat) => (
           <button
             key={cat.id}
@@ -58,7 +69,7 @@ export function GameSection() {
             onClick={() => setActiveCategory(cat.id)}
           >
             <Icon name={cat.icon} size={22} />
-            <span>{cat.label}</span>
+            <span>{t(categoryLabelKeys[cat.id])}</span>
           </button>
         ))}
       </div>
@@ -66,16 +77,16 @@ export function GameSection() {
       <div className="hot-header">
         <h2>
           <Icon name="fire" size={20} />
-          热门游戏
+          {t('home.hotGames')}
         </h2>
         <div className="hot-controls">
           <button type="button" className="view-all">
-            全部 {filtered.length}
+            {t('common.all')} {filtered.length}
           </button>
-          <button type="button" className="nav-arrow" aria-label="上一页">
+          <button type="button" className="nav-arrow" aria-label={t('common.prev')}>
             <Icon name="chevron-left" size={16} />
           </button>
-          <button type="button" className="nav-arrow" aria-label="下一页">
+          <button type="button" className="nav-arrow" aria-label={t('common.next')}>
             <Icon name="chevron-right" size={16} />
           </button>
         </div>
@@ -97,7 +108,7 @@ export function GameSection() {
                 {game.players}
               </div>
             </div>
-            <h3 className="game-name">{game.name}</h3>
+            <h3 className="game-name">{t(`games.${game.id}`)}</h3>
           </article>
         ))}
       </div>

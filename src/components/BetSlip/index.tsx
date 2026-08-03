@@ -1,12 +1,13 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Icon } from '@/components/Icon'
 import type { BetSlipItem, BetSlipTab } from '@/types/bet'
 import './index.css'
 
-const tabs: { id: BetSlipTab; label: string }[] = [
-  { id: 'single', label: '单关' },
-  { id: 'parlay', label: '串关' },
-  { id: 'settled', label: '已结算' },
+const tabs: { id: BetSlipTab; labelKey: string }[] = [
+  { id: 'single', labelKey: 'betSlip.single' },
+  { id: 'parlay', labelKey: 'betSlip.parlay' },
+  { id: 'settled', labelKey: 'betSlip.settled' },
 ]
 
 type BetSlipProps = {
@@ -18,6 +19,7 @@ type BetSlipProps = {
 }
 
 export function BetSlip({ open, onClose, items, onRemove, onClear }: BetSlipProps) {
+  const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState<BetSlipTab>('single')
   const [stake, setStake] = useState('100')
 
@@ -40,19 +42,21 @@ export function BetSlip({ open, onClose, items, onRemove, onClear }: BetSlipProp
       <aside
         className={`betslip ${open ? 'open' : ''}`}
         aria-hidden={!open}
-        aria-label="投注单"
+        aria-label={t('betSlip.title')}
       >
         <div className="betslip-header">
           <h2>
             <Icon name="ticket" size={18} />
-            投注单
-            {items.length > 0 ? <span className="betslip-count">{items.length}</span> : null}
+            {t('betSlip.title')}
+            {items.length > 0 ? (
+              <span className="betslip-count">{items.length}</span>
+            ) : null}
           </h2>
           <button
             type="button"
             className="betslip-close"
             onClick={onClose}
-            aria-label="关闭投注单"
+            aria-label={t('betSlip.close')}
           >
             <Icon name="close" size={18} />
           </button>
@@ -68,7 +72,7 @@ export function BetSlip({ open, onClose, items, onRemove, onClear }: BetSlipProp
               className={`betslip-tab ${activeTab === tab.id ? 'active' : ''}`}
               onClick={() => setActiveTab(tab.id)}
             >
-              {tab.label}
+              {t(tab.labelKey)}
             </button>
           ))}
         </div>
@@ -79,21 +83,27 @@ export function BetSlip({ open, onClose, items, onRemove, onClear }: BetSlipProp
               {showList.map((item) => (
                 <li key={item.id} className="betslip-item">
                   <div className="betslip-item-top">
-                    <span className="betslip-league">{item.league}</span>
+                    <span className="betslip-league">
+                      {t(`bets.${item.id}.league`)}
+                    </span>
                     <button
                       type="button"
                       className="betslip-remove"
                       onClick={() => onRemove(item.id)}
-                      aria-label="移除选项"
+                      aria-label={t('betSlip.remove')}
                     >
                       <Icon name="close" size={14} />
                     </button>
                   </div>
-                  <p className="betslip-match">{item.match}</p>
+                  <p className="betslip-match">{t(`bets.${item.id}.match`)}</p>
                   <div className="betslip-pick">
                     <div>
-                      <p className="betslip-market">{item.market}</p>
-                      <p className="betslip-selection">{item.selection}</p>
+                      <p className="betslip-market">
+                        {t(`bets.${item.id}.market`)}
+                      </p>
+                      <p className="betslip-selection">
+                        {t(`bets.${item.id}.selection`)}
+                      </p>
                     </div>
                     <span className="betslip-odds">{item.odds.toFixed(2)}</span>
                   </div>
@@ -102,7 +112,9 @@ export function BetSlip({ open, onClose, items, onRemove, onClear }: BetSlipProp
             </ul>
           ) : (
             <div className="betslip-empty">
-              {activeTab === 'settled' ? '暂无已结算注单' : '投注单为空，去挑选赛事吧'}
+              {activeTab === 'settled'
+                ? t('betSlip.emptySettled')
+                : t('betSlip.empty')}
             </div>
           )}
         </div>
@@ -110,7 +122,7 @@ export function BetSlip({ open, onClose, items, onRemove, onClear }: BetSlipProp
         {activeTab !== 'settled' && items.length > 0 ? (
           <div className="betslip-footer">
             <label className="betslip-stake">
-              <span>投注额</span>
+              <span>{t('betSlip.stake')}</span>
               <input
                 type="number"
                 min="1"
@@ -119,15 +131,15 @@ export function BetSlip({ open, onClose, items, onRemove, onClear }: BetSlipProp
               />
             </label>
             <div className="betslip-summary">
-              <span>可赢金额</span>
+              <span>{t('betSlip.potentialWin')}</span>
               <strong>{potentialWin.toFixed(2)}</strong>
             </div>
             <div className="betslip-actions">
               <button type="button" className="betslip-clear" onClick={onClear}>
-                清空
+                {t('betSlip.clear')}
               </button>
               <button type="button" className="betslip-submit">
-                立即投注
+                {t('betSlip.placeBet')}
               </button>
             </div>
           </div>

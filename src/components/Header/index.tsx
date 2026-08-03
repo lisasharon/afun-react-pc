@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Icon } from '@/components/Icon'
 import type { MessageType } from '@/types/message'
 import './index.css'
@@ -30,6 +31,8 @@ export function Header({
   onMenuClick,
   showMobileMenu,
 }: HeaderProps) {
+  const { t } = useTranslation()
+
   return (
     <header className="header">
       <div className="header-left">
@@ -38,7 +41,7 @@ export function Header({
             type="button"
             className="mobile-menu-btn"
             onClick={onMenuClick}
-            aria-label="打开菜单"
+            aria-label={t('common.openMenu')}
           >
             <Icon name="menu" size={22} />
           </button>
@@ -57,21 +60,23 @@ export function Header({
         </button>
 
         <button type="button" className="deposit-btn">
-          存款
+          {t('header.deposit')}
         </button>
 
         <div className="header-icons">
-          <button type="button" className="icon-btn" aria-label="搜索">
+          <button type="button" className="icon-btn" aria-label={t('common.search')}>
             <Icon name="search" size={20} />
           </button>
-          <button type="button" className="icon-btn" aria-label="个人中心">
+          <button type="button" className="icon-btn" aria-label={t('common.profile')}>
             <Icon name="user" size={20} />
           </button>
           <button
             type="button"
             className={`icon-btn ${messagesOpen ? 'active' : ''}`}
             aria-label={
-              notifyUnread > 0 ? `消息中心，${notifyUnread} 条未读` : '消息中心'
+              notifyUnread > 0
+                ? t('header.messageCenterUnread', { count: notifyUnread })
+                : t('header.messageCenter')
             }
             onClick={() => onOpenMessages('notify')}
           >
@@ -82,7 +87,9 @@ export function Header({
             type="button"
             className={`icon-btn ${betSlipOpen ? 'active' : ''}`}
             aria-label={
-              betSlipCount > 0 ? `投注单，${betSlipCount} 项` : '投注单'
+              betSlipCount > 0
+                ? t('header.betSlipCount', { count: betSlipCount })
+                : t('header.betSlip')
             }
             onClick={onOpenBetSlip}
           >

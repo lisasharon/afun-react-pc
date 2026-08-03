@@ -1,9 +1,12 @@
+import { useTranslation } from 'react-i18next'
 import { banners } from '@/mock/games'
 import './index.css'
 
 export function BannerCarousel() {
+  const { t } = useTranslation()
+
   return (
-    <section className="banners" aria-label="促销横幅">
+    <section className="banners" aria-label={t('home.banners')}>
       {banners.map((banner, index) => (
         <article
           key={banner.id}
@@ -13,9 +16,9 @@ export function BannerCarousel() {
           <div className="banner-content">
             {banner.tag && <span className="banner-tag">{banner.tag}</span>}
             <h2>{banner.title}</h2>
-            <p>{banner.subtitle}</p>
+            <p>{t(`banners.${banner.id}.subtitle`)}</p>
             <button type="button" className="banner-cta">
-              {banner.cta}
+              {t(`banners.${banner.id}.cta`)}
             </button>
           </div>
           <div className={`banner-art art-${banner.id}`} aria-hidden>

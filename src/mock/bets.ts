@@ -1,20 +1,6 @@
 import type { BetSlipItem } from '@/types/bet'
 
 export const betSlipMock: BetSlipItem[] = [
-  {
-    id: 'b1',
-    league: '英超',
-    match: '曼城 vs 阿森纳',
-    market: '全场独赢',
-    selection: '曼城',
-    odds: 1.85,
-  },
-  {
-    id: 'b2',
-    league: '西甲',
-    match: '皇马 vs 巴萨',
-    market: '让球',
-    selection: '皇马 -0.5',
-    odds: 2.05,
-  },
+  { id: 'b1', odds: 1.85 },
+  { id: 'b2', odds: 2.05 },
 ]

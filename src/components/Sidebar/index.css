@@ -308,7 +308,7 @@
 }
 
 .app-download {
-  margin-top: auto;
+  /* margin-top: auto; */
 }
 
 .sidebar-footer {
@@ -357,6 +357,44 @@
 
 .lang-btn svg:last-child {
   margin-left: auto;
+}
+
+.lang-switcher {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lang-menu {
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lang-menu button {
+  padding: 8px 10px;
+  border-radius: 6px;
+  text-align: left;
+  font-size: 12px;
+  color: var(--text-muted);
+  transition: background 0.15s, color 0.15s;
+}
+
+.lang-menu button:hover {
+  background: var(--bg-hover);
+  color: var(--text);
+}
+
+.lang-menu button.active {
+  background: rgba(61, 202, 77, 0.15);
+  color: var(--green);
+  font-weight: 600;
 }
 
 .clock {

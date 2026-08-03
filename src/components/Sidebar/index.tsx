@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Icon } from '@/components/Icon'
 import { formatDateTime } from '@/utils/format'
+import type { AppLang } from '@/i18n'
 import './index.css'
 
 type SidebarProps = {
@@ -9,39 +11,66 @@ type SidebarProps = {
   onClose: () => void
 }
 
-const quickLinks = [
-  { icon: 'game', label: '游戏' },
-  { icon: 'star', label: '收藏夹' },
-  { icon: 'clock', label: '最近的' },
+const quickLinkKeys = [
+  { icon: 'game', labelKey: 'sidebar.games' },
+  { icon: 'star', labelKey: 'sidebar.favorites' },
+  { icon: 'clock', labelKey: 'sidebar.recent' },
 ] as const
 
 const navItems = [
-  { icon: 'gift', label: '促销活动', href: '#promo' },
-  { icon: 'task', label: '任务中心', href: '#tasks' },
-  { icon: 'vip', label: 'VIP俱乐部', href: '#vip' },
-  { icon: 'blog', label: '博客', href: '#blog' },
+  { icon: 'gift', labelKey: 'sidebar.promotions', href: '#promo' },
+  { icon: 'task', labelKey: 'sidebar.tasks', href: '#tasks' },
+  { icon: 'vip', labelKey: 'sidebar.vip', href: '#vip' },
+  { icon: 'blog', labelKey: 'sidebar.blog', href: '#blog' },
 ] as const
 
 const collapsedIcons = [
-  { icon: 'lobby', label: '大厅' },
-  { icon: 'gift', label: '促销' },
-  { icon: 'slots', label: '老虎机' },
-  { icon: 'cards', label: '棋牌' },
-  { icon: 'game', label: '游戏' },
-  { icon: 'fishing', label: '捕鱼' },
-  { icon: 'lottery', label: '彩票' },
-  { icon: 'star', label: '收藏' },
+  { icon: 'lobby', labelKey: 'sidebar.lobby' },
+  { icon: 'gift', labelKey: 'sidebar.promoShort' },
+  { icon: 'slots', labelKey: 'sidebar.slots' },
+  { icon: 'cards', labelKey: 'sidebar.cards' },
+  { icon: 'game', labelKey: 'sidebar.games' },
+  { icon: 'fishing', labelKey: 'sidebar.fishing' },
+  { icon: 'lottery', labelKey: 'sidebar.lottery' },
+  { icon: 'star', labelKey: 'sidebar.favoriteShort' },
 ] as const
 
+const languages: { code: AppLang; labelKey: 'sidebar.langZh' | 'sidebar.langEn' }[] = [
+  { code: 'zh-CN', labelKey: 'sidebar.langZh' },
+  { code: 'en', labelKey: 'sidebar.langEn' },
+]
+
 export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
+  const { t, i18n } = useTranslation()
   const [now, setNow] = useState(() => new Date())
   const [mode, setMode] = useState<'casino' | 'sports'>('casino')
   const [activeCollapsed, setActiveCollapsed] = useState('lobby')
+  const [langOpen, setLangOpen] = useState(false)
+  const langRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const id = window.setInterval(() => setNow(new Date()), 1000)
     return () => window.clearInterval(id)
   }, [])
+
+  useEffect(() => {
+    if (!langOpen) return
+    const onPointerDown = (e: PointerEvent) => {
+      if (!langRef.current?.contains(e.target as Node)) setLangOpen(false)
+    }
+    window.addEventListener('pointerdown', onPointerDown)
+    return () => window.removeEventListener('pointerdown', onPointerDown)
+  }, [langOpen])
+
+  const currentLang = (i18n.language === 'en' ? 'en' : 'zh-CN') as AppLang
+  const currentLangLabel = t(
+    currentLang === 'en' ? 'sidebar.langEn' : 'sidebar.langZh',
+  )
+
+  const switchLang = (code: AppLang) => {
+    void i18n.changeLanguage(code)
+    setLangOpen(false)
+  }
 
   return (
     <>
@@ -52,14 +81,16 @@ export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
       />
       <aside
         className={`sidebar ${expanded ? 'expanded' : 'collapsed'}`}
-        aria-label="侧边导航"
+        aria-label={t('sidebar.nav')}
       >
         <div className="sidebar-top">
           <button
             type="button"
             className="sidebar-toggle"
             onClick={onToggle}
-            aria-label={expanded ? '折叠菜单' : '展开菜单'}
+            aria-label={
+              expanded ? t('common.collapseMenu') : t('common.expandMenu')
+            }
           >
             <Icon name="menu" size={22} />
           </button>
@@ -71,14 +102,14 @@ export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
                 className={mode === 'casino' ? 'active' : ''}
                 onClick={() => setMode('casino')}
               >
-                娱乐城
+                {t('sidebar.casino')}
               </button>
               <button
                 type="button"
                 className={mode === 'sports' ? 'active' : ''}
                 onClick={() => setMode('sports')}
               >
-                体育
+                {t('sidebar.sports')}
               </button>
             </div>
           ) : null}
@@ -88,10 +119,10 @@ export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
           <>
             <div className="promo-card referral">
               <div className="promo-card-body">
-                <p className="promo-title">邀请并赚钱</p>
-                <p className="promo-desc">邀请好友，共享佣金奖励</p>
+                <p className="promo-title">{t('sidebar.inviteTitle')}</p>
+                <p className="promo-desc">{t('sidebar.inviteDesc')}</p>
                 <button type="button" className="copy-btn">
-                  复制链接
+                  {t('sidebar.copyLink')}
                 </button>
               </div>
               <div className="promo-art money-bag" aria-hidden>
@@ -100,29 +131,29 @@ export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
             </div>
 
             <div className="quick-links">
-              {quickLinks.map((item) => (
-                <button type="button" className="quick-link" key={item.label}>
+              {quickLinkKeys.map((item) => (
+                <button type="button" className="quick-link" key={item.labelKey}>
                   <span className="quick-icon">
                     <Icon name={item.icon} size={22} />
                   </span>
-                  <span>{item.label}</span>
+                  <span>{t(item.labelKey)}</span>
                 </button>
               ))}
             </div>
 
             <nav className="sidebar-nav">
               {navItems.map((item) => (
-                <a href={item.href} key={item.label}>
+                <a href={item.href} key={item.labelKey}>
                   <Icon name={item.icon} size={18} />
-                  {item.label}
+                  {t(item.labelKey)}
                 </a>
               ))}
             </nav>
 
             <div className="promo-card app-download">
               <div className="promo-card-body">
-                <p className="promo-title">下载 APP</p>
-                <p className="promo-desc">领取专属奖励礼包</p>
+                <p className="promo-title">{t('sidebar.downloadTitle')}</p>
+                <p className="promo-desc">{t('sidebar.downloadDesc')}</p>
               </div>
               <div className="promo-art phones" aria-hidden>
                 <span className="phone phone-1" />
@@ -134,18 +165,43 @@ export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
               <div className="footer-links">
                 <button type="button">
                   <Icon name="help" size={16} />
-                  帮助
+                  {t('common.help')}
                 </button>
                 <button type="button">
                   <Icon name="headset" size={16} />
-                  在线客服
+                  {t('common.onlineSupport')}
                 </button>
               </div>
-              <button type="button" className="lang-btn">
-                <Icon name="globe" size={16} />
-                语言: 简体中文
-                <Icon name="chevron-down" size={14} />
-              </button>
+
+              <div className="lang-switcher" ref={langRef}>
+                <button
+                  type="button"
+                  className="lang-btn"
+                  aria-expanded={langOpen}
+                  onClick={() => setLangOpen((v) => !v)}
+                >
+                  <Icon name="globe" size={16} />
+                  {t('common.language')}: {currentLangLabel}
+                  <Icon name="chevron-down" size={14} />
+                </button>
+                {langOpen ? (
+                  <div className="lang-menu" role="listbox">
+                    {languages.map((lang) => (
+                      <button
+                        key={lang.code}
+                        type="button"
+                        role="option"
+                        aria-selected={currentLang === lang.code}
+                        className={currentLang === lang.code ? 'active' : ''}
+                        onClick={() => switchLang(lang.code)}
+                      >
+                        {t(lang.labelKey)}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+
               <time className="clock" dateTime={now.toISOString()}>
                 {formatDateTime(now)}
               </time>
@@ -155,9 +211,9 @@ export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
           <nav className="collapsed-nav">
             {collapsedIcons.map((item) => (
               <button
-                key={item.label}
+                key={item.labelKey}
                 type="button"
-                title={item.label}
+                title={t(item.labelKey)}
                 className={`collapsed-item ${activeCollapsed === item.icon ? 'active' : ''}`}
                 onClick={() => setActiveCollapsed(item.icon)}
               >
