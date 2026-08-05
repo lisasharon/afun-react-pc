@@ -36,7 +36,13 @@ const promoMenus = [
   { id: 'rebate' as const, icon: 'clock' },
 ] as const
 
-const serviceMenus = [{ id: 'personalInfo' as const, icon: 'user' }] as const
+const serviceMenus = [
+  { id: 'personalInfo' as const, icon: 'user' },
+  { id: 'kycInfo' as const, icon: 'user' },
+  { id: 'setting' as const, icon: 'user' },
+  { id: 'selfExclusion' as const, icon: 'user' },
+  { id: 'logOut' as const, icon: 'user' },
+] as const
 
 export function PersonalCenter() {
   const { t } = useTranslation()
