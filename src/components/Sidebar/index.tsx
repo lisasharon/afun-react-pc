@@ -20,9 +20,9 @@ const quickLinkKeys = [
 
 const navItems = [
   { icon: 'gift', labelKey: 'sidebar.promotions', to: '/promotion' },
-  { icon: 'task', labelKey: 'sidebar.tasks', to: '#tasks' },
-  { icon: 'vip', labelKey: 'sidebar.vip', to: '#vip' },
-  { icon: 'blog', labelKey: 'sidebar.blog', to: '#blog' },
+  { icon: 'task', labelKey: 'sidebar.tasks', to: '/tasks' },
+  { icon: 'vip', labelKey: 'sidebar.vip', to: '/vip' },
+  { icon: 'blog', labelKey: 'sidebar.blog', to: '/blog' },
 ] as const
 
 const collapsedIcons = [

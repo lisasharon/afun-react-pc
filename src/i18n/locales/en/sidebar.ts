@@ -1,0 +1,28 @@
+const sidebar = {
+  nav: 'Side navigation',
+  casino: 'Casino',
+  sports: 'Sports',
+  inviteTitle: 'Invite & Earn',
+  inviteDesc: 'Invite friends and share commission rewards',
+  copyLink: 'Copy Link',
+  games: 'Games',
+  favorites: 'Favorites',
+  recent: 'Recent',
+  promotions: 'Promotions',
+  tasks: 'Task Center',
+  vip: 'VIP Club',
+  blog: 'Blog',
+  downloadTitle: 'Download APP',
+  downloadDesc: 'Claim exclusive reward packs',
+  langZh: '简体中文',
+  langEn: 'English',
+  lobby: 'Lobby',
+  promoShort: 'Promo',
+  slots: 'Slots',
+  cards: 'Cards',
+  fishing: 'Fishing',
+  lottery: 'Lottery',
+  favoriteShort: 'Fav',
+} as const
+
+export default sidebar

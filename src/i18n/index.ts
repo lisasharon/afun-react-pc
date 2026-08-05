@@ -1,7 +1,7 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
-import zhCN from './locales/zh-CN'
-import en from './locales/en'
+import zhCN from './locales/zh-CN/index'
+import en from './locales/en/index'
 
 export const LANG_STORAGE_KEY = 'betup-lang'
 export const SUPPORTED_LANGS = ['zh-CN', 'en'] as const

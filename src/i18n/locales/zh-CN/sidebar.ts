@@ -1,0 +1,28 @@
+const sidebar = {
+  nav: '侧边导航',
+  casino: '娱乐城',
+  sports: '体育',
+  inviteTitle: '邀请并赚钱',
+  inviteDesc: '邀请好友，共享佣金奖励',
+  copyLink: '复制链接',
+  games: '游戏',
+  favorites: '收藏夹',
+  recent: '最近的',
+  promotions: '促销活动',
+  tasks: '任务中心',
+  vip: 'VIP俱乐部',
+  blog: '博客',
+  downloadTitle: '下载 APP',
+  downloadDesc: '领取专属奖励礼包',
+  langZh: '简体中文',
+  langEn: 'English',
+  lobby: '大厅',
+  promoShort: '促销',
+  slots: '老虎机',
+  cards: '棋牌',
+  fishing: '捕鱼',
+  lottery: '彩票',
+  favoriteShort: '收藏',
+} as const
+
+export default sidebar
