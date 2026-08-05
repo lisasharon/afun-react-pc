@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import { Icon } from '@/components/Icon'
 import type { MessageType } from '@/types/message'
 import './index.css'
@@ -67,9 +68,9 @@ export function Header({
           <button type="button" className="icon-btn" aria-label={t('common.search')}>
             <Icon name="search" size={20} />
           </button>
-          <button type="button" className="icon-btn" aria-label={t('common.profile')}>
+          <Link to="/profile" className="icon-btn" aria-label={t('common.profile')}>
             <Icon name="user" size={20} />
-          </button>
+          </Link>
           <button
             type="button"
             className={`icon-btn ${messagesOpen ? 'active' : ''}`}

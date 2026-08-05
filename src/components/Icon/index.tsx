@@ -224,6 +224,45 @@ export function Icon({ name, size = 20, className }: IconProps) {
           <path d="M5 18h14" />
         </svg>
       )
+    case 'copy':
+      return (
+        <svg {...props}>
+          <rect x="9" y="9" width="11" height="11" rx="2" />
+          <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+        </svg>
+      )
+    case 'wallet':
+      return (
+        <svg {...props}>
+          <path d="M3 7h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z" />
+          <path d="M3 11h18" />
+          <circle cx="17" cy="15" r="1" fill="currentColor" stroke="none" />
+        </svg>
+      )
+    case 'transfer':
+      return (
+        <svg {...props}>
+          <path d="M7 7h11l-3-3" />
+          <path d="M17 17H6l3 3" />
+        </svg>
+      )
+    case 'chart':
+      return (
+        <svg {...props}>
+          <line x1="6" y1="18" x2="6" y2="10" />
+          <line x1="12" y1="18" x2="12" y2="6" />
+          <line x1="18" y1="18" x2="18" y2="13" />
+        </svg>
+      )
+    case 'calendar':
+      return (
+        <svg {...props}>
+          <rect x="4" y="5" width="16" height="15" rx="2" />
+          <line x1="4" y1="10" x2="20" y2="10" />
+          <line x1="9" y1="3" x2="9" y2="7" />
+          <line x1="15" y1="3" x2="15" y2="7" />
+        </svg>
+      )
     default:
       return null
   }

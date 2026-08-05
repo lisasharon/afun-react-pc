@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { NavLink } from 'react-router-dom'
 import { Icon } from '@/components/Icon'
 import { formatDateTime } from '@/utils/format'
 import type { AppLang } from '@/i18n'
@@ -18,10 +19,10 @@ const quickLinkKeys = [
 ] as const
 
 const navItems = [
-  { icon: 'gift', labelKey: 'sidebar.promotions', href: '#promo' },
-  { icon: 'task', labelKey: 'sidebar.tasks', href: '#tasks' },
-  { icon: 'vip', labelKey: 'sidebar.vip', href: '#vip' },
-  { icon: 'blog', labelKey: 'sidebar.blog', href: '#blog' },
+  { icon: 'gift', labelKey: 'sidebar.promotions', to: '/promotion' },
+  { icon: 'task', labelKey: 'sidebar.tasks', to: '#tasks' },
+  { icon: 'vip', labelKey: 'sidebar.vip', to: '#vip' },
+  { icon: 'blog', labelKey: 'sidebar.blog', to: '#blog' },
 ] as const
 
 const collapsedIcons = [
@@ -143,10 +144,16 @@ export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
 
             <nav className="sidebar-nav">
               {navItems.map((item) => (
-                <a href={item.href} key={item.labelKey}>
+                <NavLink
+                  to={item.to}
+                  key={item.labelKey}
+                  className={({ isActive }) =>
+                    isActive ? 'sidebar-link active' : 'sidebar-link'
+                  }
+                >
                   <Icon name={item.icon} size={18} />
                   {t(item.labelKey)}
-                </a>
+                </NavLink>
               ))}
             </nav>
 

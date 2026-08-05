@@ -282,7 +282,8 @@
   flex-shrink: 0;
 }
 
-.sidebar-nav a {
+.sidebar-nav a,
+.sidebar-link {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -293,17 +294,29 @@
   transition: background 0.15s, color 0.15s;
 }
 
-.sidebar-nav a:hover {
+.sidebar-nav a:hover,
+.sidebar-link:hover {
   background: var(--bg-hover);
   color: var(--text);
 }
 
-.sidebar-nav a svg {
+.sidebar-nav a svg,
+.sidebar-link svg {
   color: var(--text-dim);
   flex-shrink: 0;
 }
 
-.sidebar-nav a:hover svg {
+.sidebar-nav a:hover svg,
+.sidebar-link:hover svg {
+  color: var(--green);
+}
+
+.sidebar-link.active {
+  background: rgba(61, 202, 77, 0.12);
+  color: var(--green);
+}
+
+.sidebar-link.active svg {
   color: var(--green);
 }
 
