@@ -59,7 +59,9 @@ export function AntdProvider({ children }: AntdProviderProps) {
         },
       }}
     >
-      <AntdApp>{children}</AntdApp>
+      <AntdApp className="app-shell" style={{ height: '100%' }}>
+        {children}
+      </AntdApp>
     </ConfigProvider>
   )
 }

@@ -110,7 +110,8 @@ export function MainLayout() {
           <div className="main-layout__page-body">
             <Outlet />
           </div>
-          {!isMobile ? <Footer /> : null}
+          {/* 右侧主内容区公共底部：桌面全站显示；移动端个人中心也显示 */}
+          {!isMobile || location.pathname === '/profile' ? <Footer /> : null}
         </main>
       </div>
       {!isMobile ? (
