@@ -1,4 +1,4 @@
-const promotion = {
+const promo = {
   title: '促销活动',
   subtitle: '精选优惠与限时活动，领取你的专属奖励',
   all: '全部',
@@ -11,4 +11,4 @@ const promotion = {
   },
 } as const
 
-export default promotion
+export default promo

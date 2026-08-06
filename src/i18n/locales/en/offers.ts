@@ -1,4 +1,4 @@
-const promotions = {
+const offers = {
   p1: {
     title: '5% First Deposit Bonus',
     desc: 'Get 5% extra on your first deposit with no cap',
@@ -37,4 +37,4 @@ const promotions = {
   },
 } as const
 
-export default promotions
+export default offers

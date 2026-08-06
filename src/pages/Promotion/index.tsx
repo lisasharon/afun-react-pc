@@ -6,10 +6,10 @@ import type { PromotionCategory } from '@/types/promotion'
 import './index.css'
 
 const tabs: { id: PromotionCategory; labelKey: string }[] = [
-  { id: 'all', labelKey: 'promotion.all' },
-  { id: 'deposit', labelKey: 'promotion.deposit' },
-  { id: 'sports', labelKey: 'promotion.sports' },
-  { id: 'casino', labelKey: 'promotion.casino' },
+  { id: 'all', labelKey: 'promo.all' },
+  { id: 'deposit', labelKey: 'promo.deposit' },
+  { id: 'sports', labelKey: 'promo.sports' },
+  { id: 'casino', labelKey: 'promo.casino' },
 ]
 
 export function Promotion() {
@@ -26,9 +26,9 @@ export function Promotion() {
       <header className="promotion-header">
         <h1>
           <Icon name="gift" size={22} />
-          {t('promotion.title')}
+          {t('promo.title')}
         </h1>
-        <p>{t('promotion.subtitle')}</p>
+        <p>{t('promo.subtitle')}</p>
       </header>
 
       <div className="promotion-tabs" role="tablist">
@@ -55,17 +55,17 @@ export function Promotion() {
           >
             {item.badge ? (
               <span className={`promotion-badge ${item.badge}`}>
-                {t(`promotion.badge.${item.badge}`)}
+                {t(`promo.badge.${item.badge}`)}
               </span>
             ) : null}
             <div className="promotion-card-body">
-              <h2>{t(`promotions.${item.id}.title`)}</h2>
-              <p>{t(`promotions.${item.id}.desc`)}</p>
+              <h2>{t(`offers.${item.id}.title`)}</h2>
+              <p>{t(`offers.${item.id}.desc`)}</p>
               <div className="promotion-meta">
-                <span>{t(`promotions.${item.id}.period`)}</span>
+                <span>{t(`offers.${item.id}.period`)}</span>
               </div>
               <button type="button" className="promotion-cta">
-                {t(`promotions.${item.id}.cta`)}
+                {t(`offers.${item.id}.cta`)}
               </button>
             </div>
           </article>

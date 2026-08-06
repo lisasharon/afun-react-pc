@@ -1,4 +1,4 @@
-const messages = {
+const notices = {
   n1: {
     title: '首存奖励已到账',
     time: '今天 14:22',
@@ -51,4 +51,4 @@ const messages = {
   },
 } as const
 
-export default messages
+export default notices

@@ -9,10 +9,10 @@ import {
 import './index.css'
 
 const tabs: { id: MessageType; labelKey: string }[] = [
-  { id: 'notify', labelKey: 'message.notify' },
-  { id: 'mail', labelKey: 'message.mail' },
-  { id: 'announce', labelKey: 'message.announce' },
-  { id: 'feedback', labelKey: 'message.feedback' },
+  { id: 'notify', labelKey: 'inbox.notify' },
+  { id: 'mail', labelKey: 'inbox.mail' },
+  { id: 'announce', labelKey: 'inbox.announce' },
+  { id: 'feedback', labelKey: 'inbox.feedback' },
 ]
 
 type MessageCenterProps = {
@@ -50,7 +50,7 @@ export function MessageCenter({
 
   const list = messages.filter((m) => m.type === activeTab)
   const activeTabLabel = t(
-    tabs.find((tab) => tab.id === activeTab)?.labelKey ?? 'message.notify',
+    tabs.find((tab) => tab.id === activeTab)?.labelKey ?? 'inbox.notify',
   )
 
   const openMessage = (message: MessageItem) => {
@@ -70,18 +70,18 @@ export function MessageCenter({
       <aside
         className={`message-center ${open ? 'open' : ''}`}
         aria-hidden={!open}
-        aria-label={t('message.title')}
+        aria-label={t('inbox.title')}
       >
         <div className="message-header">
           <h2>
             <Icon name="bell" size={18} />
-            {t('message.title')}
+            {t('inbox.title')}
           </h2>
           <button
             type="button"
             className="message-close"
             onClick={onClose}
-            aria-label={t('message.close')}
+            aria-label={t('inbox.close')}
           >
             <Icon name="close" size={18} />
           </button>
@@ -119,10 +119,10 @@ export function MessageCenter({
                     <span className={`msg-dot ${message.read ? 'read' : ''}`} />
                     <div>
                       <p className="msg-title">
-                        {t(`messages.${message.id}.title`)}
+                        {t(`notices.${message.id}.title`)}
                       </p>
                       <p className="msg-time">
-                        {t(`messages.${message.id}.time`)}
+                        {t(`notices.${message.id}.time`)}
                       </p>
                     </div>
                   </button>
@@ -148,22 +148,22 @@ export function MessageCenter({
           >
             <div className="msg-detail-header">
               <h3 id="msg-detail-title">
-                {t(`messages.${activeMessage.id}.title`)}
+                {t(`notices.${activeMessage.id}.title`)}
               </h3>
               <button
                 type="button"
                 className="message-close"
                 onClick={closeDetail}
-                aria-label={t('message.closeDetail')}
+                aria-label={t('inbox.closeDetail')}
               >
                 <Icon name="close" size={18} />
               </button>
             </div>
             <p className="msg-detail-time">
-              {t(`messages.${activeMessage.id}.time`)}
+              {t(`notices.${activeMessage.id}.time`)}
             </p>
             <div className="msg-detail-content">
-              {t(`messages.${activeMessage.id}.content`)}
+              {t(`notices.${activeMessage.id}.content`)}
             </div>
             <div className="msg-detail-footer">
               <button type="button" className="msg-detail-ok" onClick={closeDetail}>

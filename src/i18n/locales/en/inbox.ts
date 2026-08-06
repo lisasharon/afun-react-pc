@@ -1,4 +1,4 @@
-const message = {
+const inbox = {
   title: 'Message Center',
   close: 'Close message center',
   closeDetail: 'Close details',
@@ -8,4 +8,4 @@ const message = {
   feedback: 'Feedback',
 } as const
 
-export default message
+export default inbox

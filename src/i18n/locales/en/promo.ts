@@ -1,4 +1,4 @@
-const promotion = {
+const promo = {
   title: 'Promotions',
   subtitle: 'Hand-picked offers and limited-time events',
   all: 'All',
@@ -11,4 +11,4 @@ const promotion = {
   },
 } as const
 
-export default promotion
+export default promo

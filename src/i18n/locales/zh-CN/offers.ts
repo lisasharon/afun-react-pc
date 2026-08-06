@@ -1,4 +1,4 @@
-const promotions = {
+const offers = {
   p1: {
     title: '首存 5% 奖励',
     desc: '首次存款即可领取 5% 额外奖励，最高无上限',
@@ -37,4 +37,4 @@ const promotions = {
   },
 } as const
 
-export default promotions
+export default offers

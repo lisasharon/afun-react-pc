@@ -1,4 +1,4 @@
-const messages = {
+const notices = {
   n1: {
     title: 'First Deposit Bonus Credited',
     time: 'Today 14:22',
@@ -51,4 +51,4 @@ const messages = {
   },
 } as const
 
-export default messages
+export default notices
