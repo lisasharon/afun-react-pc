@@ -5,10 +5,12 @@ const home = {
   hotGames: 'Hot Games',
   lobby: 'Lobby',
   providers: 'Providers',
+  minigames: 'Mini Games',
   slots: 'Slots',
   fishing: 'Fishing',
   cards: 'Table Games',
   lottery: 'Lottery',
+  playing: '{{count}} playing',
 } as const
 
 export default home

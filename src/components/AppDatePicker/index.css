@@ -1,0 +1,31 @@
+.app-date-picker.ant-picker {
+  background: var(--bg);
+  border-color: var(--border);
+  color: var(--text-muted);
+  box-shadow: none;
+}
+
+.app-date-picker.ant-picker:hover,
+.app-date-picker.ant-picker-focused {
+  border-color: rgba(61, 202, 77, 0.45);
+  box-shadow: 0 0 0 2px var(--green-glow);
+}
+
+.app-date-picker .ant-picker-input > input {
+  color: var(--text);
+  font-size: 13px;
+}
+
+.app-date-picker .ant-picker-suffix {
+  color: var(--text-muted);
+}
+
+.app-date-picker.ant-picker-disabled {
+  opacity: 0.65;
+}
+
+@media (max-width: 960px) {
+  .app-date-picker.ant-picker {
+    width: 100%;
+  }
+}

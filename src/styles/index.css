@@ -21,6 +21,10 @@
   --badge-red: #ef4444;
   --radius: 10px;
   --radius-sm: 8px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
   --font: 'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
     system-ui, sans-serif;
   --font-display: 'Outfit', var(--font);
@@ -38,6 +42,8 @@ html,
 body,
 #root {
   height: 100%;
+  min-height: 100%;
+  min-height: 100dvh;
 }
 
 body {
@@ -47,6 +53,8 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 button,
@@ -87,4 +95,16 @@ img {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #3a4555;
+}
+
+@media (max-width: 960px) {
+  :root {
+    --header-h: 52px;
+    --message-w: min(340px, 100vw);
+  }
+
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
 }

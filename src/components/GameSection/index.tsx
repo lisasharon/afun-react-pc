@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { categories, games } from '@/mock/games'
 import { Icon } from '@/components/Icon'
+import { useIsMobile } from '@/hooks'
 import './index.css'
 
 const coverStyles: Record<string, string> = {
@@ -30,6 +31,7 @@ const coverStyles: Record<string, string> = {
 const categoryLabelKeys: Record<string, string> = {
   lobby: 'home.lobby',
   providers: 'home.providers',
+  minigames: 'home.minigames',
   slots: 'home.slots',
   fishing: 'home.fishing',
   cards: 'home.cards',
@@ -38,6 +40,7 @@ const categoryLabelKeys: Record<string, string> = {
 
 export function GameSection() {
   const { t } = useTranslation()
+  const isMobile = useIsMobile()
   const [activeCategory, setActiveCategory] = useState('lobby')
   const [query, setQuery] = useState('')
 
@@ -92,9 +95,12 @@ export function GameSection() {
         </div>
       </div>
 
-      <div className="game-grid">
-        {filtered.map((game) => (
-          <article key={game.id} className="game-card">
+      <div className={`game-grid ${isMobile ? 'game-grid--mobile' : ''}`}>
+        {filtered.map((game, index) => (
+          <article
+            key={game.id}
+            className={`game-card ${isMobile && index < 2 ? 'game-card--large' : ''}`}
+          >
             <div
               className="game-cover"
               style={{ background: coverStyles[game.cover] }}
@@ -103,12 +109,24 @@ export function GameSection() {
                 <span className="provider-badge">{game.provider}</span>
               )}
               <div className="cover-deco" data-cover={game.cover} />
-              <div className="player-count">
-                <Icon name="user" size={12} />
-                {game.players}
-              </div>
+              {isMobile ? (
+                <div className="game-cover-meta">
+                  <h3 className="game-cover-title">{t(`games.${game.id}`)}</h3>
+                  <div className="player-count player-count--live">
+                    <span className="live-dot" />
+                    {t('home.playing', { count: game.players })}
+                  </div>
+                </div>
+              ) : (
+                <div className="player-count">
+                  <Icon name="user" size={12} />
+                  {game.players}
+                </div>
+              )}
             </div>
-            <h3 className="game-name">{t(`games.${game.id}`)}</h3>
+            {!isMobile ? (
+              <h3 className="game-name">{t(`games.${game.id}`)}</h3>
+            ) : null}
           </article>
         ))}
       </div>

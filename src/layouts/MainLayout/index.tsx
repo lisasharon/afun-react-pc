@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { Sidebar } from '@/components/Sidebar'
 import { Header } from '@/components/Header'
+import { BottomNav } from '@/components/BottomNav'
 import { MessageCenter } from '@/components/MessageCenter'
 import { BetSlip } from '@/components/BetSlip'
 import { FloatingSupport } from '@/components/FloatingSupport'
@@ -30,7 +31,10 @@ export function MainLayout() {
 
   useEffect(() => {
     pageRef.current?.scrollTo({ top: 0, left: 0 })
-  }, [location.pathname])
+    if (isMobile) setSidebarExpanded(false)
+    setMessagesOpen(false)
+    setBetSlipOpen(false)
+  }, [location.pathname, isMobile])
 
   const notifyUnread = countUnread(messages)
   const betSlipCount = betItems.length
@@ -69,53 +73,71 @@ export function MainLayout() {
 
   const layoutClass = [
     'main-layout',
+    isMobile ? 'is-mobile' : 'is-desktop',
     sidebarExpanded ? 'sidebar-expanded' : 'sidebar-collapsed',
     panelOpen ? 'messages-open' : '',
+    panelOpen ? 'drawer-open' : '',
+    location.pathname.startsWith('/sports') ? 'is-sports' : '',
   ]
     .filter(Boolean)
     .join(' ')
 
   return (
     <div className={layoutClass}>
-      <Sidebar
-        expanded={sidebarExpanded}
-        onToggle={toggleSidebar}
-        onClose={closeSidebar}
-      />
-      <div className="main-layout__content">
-        <Header
-          onOpenMessages={openMessages}
-          onOpenBetSlip={openBetSlip}
-          messagesOpen={messagesOpen}
-          betSlipOpen={betSlipOpen}
-          notifyUnread={notifyUnread}
-          betSlipCount={betSlipCount}
-          showMobileMenu={isMobile}
-          onMenuClick={toggleSidebar}
+      {!isMobile ? (
+        <Sidebar
+          expanded={sidebarExpanded}
+          onToggle={toggleSidebar}
+          onClose={closeSidebar}
         />
-        <main className="main-layout__page" ref={pageRef}>
+      ) : null}
+      <div className="main-layout__content">
+        {!(isMobile && location.pathname === '/profile') ? (
+          <Header
+            onOpenMessages={openMessages}
+            onOpenBetSlip={openBetSlip}
+            messagesOpen={messagesOpen}
+            betSlipOpen={betSlipOpen}
+            notifyUnread={notifyUnread}
+            betSlipCount={betSlipCount}
+            isMobile={isMobile}
+          />
+        ) : null}
+        <main
+          className={`main-layout__page ${isMobile && location.pathname === '/profile' ? 'main-layout__page--flush' : ''}`}
+          ref={pageRef}
+        >
           <div className="main-layout__page-body">
             <Outlet />
           </div>
-          <Footer />
+          {!isMobile ? <Footer /> : null}
         </main>
       </div>
-      <MessageCenter
-        open={messagesOpen}
-        onClose={closeMessages}
-        messages={messages}
-        activeTab={messageTab}
-        onTabChange={setMessageTab}
-        onMarkRead={markMessageRead}
-      />
-      <BetSlip
-        open={betSlipOpen}
-        onClose={closeBetSlip}
-        items={betItems}
-        onRemove={removeBet}
-        onClear={clearBets}
-      />
-      <FloatingSupport />
+      {!isMobile ? (
+        <>
+          <MessageCenter
+            open={messagesOpen}
+            onClose={closeMessages}
+            messages={messages}
+            activeTab={messageTab}
+            onTabChange={setMessageTab}
+            onMarkRead={markMessageRead}
+          />
+          <BetSlip
+            open={betSlipOpen}
+            onClose={closeBetSlip}
+            items={betItems}
+            onRemove={removeBet}
+            onClear={clearBets}
+          />
+        </>
+      ) : null}
+      {isMobile &&
+      location.pathname !== '/browse' &&
+      location.pathname !== '/profile' ? (
+        <FloatingSupport />
+      ) : null}
+      {isMobile ? <BottomNav /> : null}
     </div>
   )
 }

@@ -69,8 +69,8 @@
 }
 
 .betslip-close {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -296,7 +296,7 @@
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.45);
-    z-index: 55;
+    z-index: 80;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.45s ease;
@@ -308,6 +308,24 @@
   }
 
   .betslip {
-    z-index: 60;
+    z-index: 85;
+    padding-top: var(--safe-top);
+    padding-bottom: var(--safe-bottom);
+  }
+}
+
+@media (max-width: 640px) {
+  .betslip {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .betslip-footer {
+    padding-bottom: calc(18px + var(--safe-bottom));
+  }
+
+  .betslip-clear,
+  .betslip-submit {
+    min-height: 44px;
   }
 }

@@ -227,12 +227,23 @@
 
 @media (max-width: 640px) {
   .site-footer {
-    padding: 28px 0 16px;
+    padding: 28px 0 calc(20px + var(--safe-bottom));
     gap: 22px;
   }
 
   .site-footer__nav {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 18px;
+  }
+
+  .site-footer__social {
+    width: 44px;
+    height: 44px;
+  }
+
+  .site-footer__col a {
+    display: inline-block;
+    padding: 4px 0;
+    min-height: 32px;
   }
 }

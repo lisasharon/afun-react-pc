@@ -17,6 +17,14 @@
   width: var(--sidebar-w);
   min-width: 0;
   transition: width 0.28s cubic-bezier(0.22, 1, 0.36, 1), padding 0.28s;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .sidebar.collapsed {
@@ -61,27 +69,112 @@
   gap: 4px;
   padding: 3px;
   background: var(--bg);
-  border-radius: 999px;
+  border-radius: 10px;
   flex: 1;
   min-width: 0;
 }
 
 .sidebar-mode button {
   padding: 8px 6px;
-  border-radius: 999px;
+  border-radius: 8px;
   font-size: 13px;
   font-weight: 600;
   color: var(--text-muted);
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 }
 
-.sidebar-mode button.active {
+.sidebar-mode--casino button.active {
   background: var(--green);
   color: #0a120c;
 }
 
+.sidebar-mode--sports button.active {
+  background: linear-gradient(135deg, #ff8a3d 0%, #e85a2a 55%, #c9441a 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(232, 90, 42, 0.35);
+}
+
 .sidebar-mode button:not(.active):hover {
   color: var(--text);
+}
+
+.sidebar-menu-card {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px;
+  border-radius: 12px;
+  background: #1a2229;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  flex-shrink: 0;
+}
+
+.sidebar-menu-card .sidebar-link {
+  width: 100%;
+  color: var(--text);
+}
+
+.sidebar-menu-card .sidebar-link span {
+  flex: 1;
+  text-align: left;
+}
+
+.sidebar-menu-card .sidebar-link svg {
+  color: var(--text-muted);
+}
+
+.sidebar-menu-card .sidebar-link--chevron span {
+  flex: 1;
+}
+
+.sidebar-menu-card .sidebar-badge {
+  flex: 0 0 auto;
+}
+
+.sidebar-menu-card--footer {
+  position: relative;
+}
+
+.sidebar-menu-card--footer .lang-menu {
+  position: static;
+  margin: 0 6px 4px;
+  z-index: auto;
+}
+
+.sidebar-time {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  font-size: 12px;
+  color: white;
+  font-variant-numeric: tabular-nums;
+}
+
+.sidebar-time svg {
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+
+.sidebar-badge {
+  margin-left: auto;
+  min-width: 28px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--green);
+  color: #0a120c;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.sidebar-link--chevron > svg:last-child {
+  margin-left: auto;
+  color: var(--text-dim);
 }
 
 .collapsed-nav {
@@ -425,7 +518,7 @@
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.55);
-    z-index: 50;
+    z-index: 70;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.25s;
@@ -440,16 +533,22 @@
     position: fixed;
     top: 0;
     left: 0;
-    bottom: 0;
-    width: min(280px, 85vw);
+    bottom: calc(56px + var(--safe-bottom));
+    z-index: 75;
+    width: min(300px, 88vw);
+    padding: calc(14px + var(--safe-top)) 12px 14px;
+    padding-left: calc(12px + var(--safe-left));
     transform: translateX(-100%);
     transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
     box-shadow: none;
+    border-right: none;
+    -webkit-overflow-scrolling: touch;
   }
 
   .sidebar.collapsed {
-    width: min(280px, 85vw);
-    padding: 14px 12px;
+    width: min(300px, 88vw);
+    padding: calc(14px + var(--safe-top)) 12px 14px;
+    padding-left: calc(12px + var(--safe-left));
     align-items: stretch;
     transform: translateX(-100%);
   }
@@ -457,5 +556,10 @@
   .sidebar.expanded {
     transform: translateX(0);
     box-shadow: 8px 0 32px rgba(0, 0, 0, 0.5);
+  }
+
+  /* 移动端抽屉始终展示完整菜单，不走桌面折叠图标栏 */
+  .sidebar.collapsed .collapsed-nav {
+    display: none;
   }
 }

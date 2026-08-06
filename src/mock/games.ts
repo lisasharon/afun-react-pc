@@ -26,10 +26,9 @@ export const banners: Banner[] = [
 export const categories: GameCategory[] = [
   { id: 'lobby', icon: 'lobby' },
   { id: 'providers', icon: 'providers' },
+  { id: 'minigames', icon: 'minigames' },
   { id: 'slots', icon: 'slots' },
   { id: 'fishing', icon: 'fishing' },
-  { id: 'cards', icon: 'cards' },
-  { id: 'lottery', icon: 'lottery' },
 ]
 
 export const games: Game[] = [

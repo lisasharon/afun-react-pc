@@ -1,6 +1,10 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import dayjs, { type Dayjs } from 'dayjs'
 import { Icon } from '@/components/Icon'
+import { AppDatePicker } from '@/components/AppDatePicker'
+import { useIsMobile } from '@/hooks'
 import './index.css'
 
 type MenuKey =
@@ -18,13 +22,15 @@ type MenuKey =
   | 'setting'
   | 'selfExclusion'
   | 'logOut'
+  | 'vipClub'
+  | 'kyc'
 
 type RecordTab = 'deposit' | 'withdraw' | 'other'
 type CurrencyTab = 'fiat' | 'crypto'
 
 const financeMenus = [
   { id: 'deposit' as const, icon: 'wallet' },
-  { id: 'withdraw' as const, icon: 'cards' },
+  { id: 'withdraw' as const, icon: 'bank-card' },
   { id: 'transfer' as const, icon: 'transfer' },
 ] as const
 
@@ -34,29 +40,63 @@ const recordMenus = [
 ] as const
 
 const promoMenus = [
-  { id: 'affiliate' as const, icon: 'gift' },
-  { id: 'interest' as const, icon: 'star' },
-  { id: 'redeem' as const, icon: 'blog' },
-  { id: 'rebate' as const, icon: 'clock' },
+  { id: 'affiliate' as const, icon: 'affiliate' },
+  { id: 'interest' as const, icon: 'interest' },
+  { id: 'redeem' as const, icon: 'redeem' },
+  { id: 'rebate' as const, icon: 'rebate' },
 ] as const
 
 const serviceMenus = [
   { id: 'personalInfo' as const, icon: 'user' },
-  { id: 'kycInfo' as const, icon: 'user' },
-  { id: 'setting' as const, icon: 'user' },
+  { id: 'kycInfo' as const, icon: 'shield' },
+  { id: 'setting' as const, icon: 'settings' },
   { id: 'selfExclusion' as const, icon: 'user' },
   { id: 'logOut' as const, icon: 'user' },
 ] as const
 
+const mobilePrimary = [
+  {
+    id: 'transactions' as const,
+    icon: 'task',
+    titleKey: 'profile.transactions',
+    descKey: 'profile.transactionsDesc',
+  },
+  {
+    id: 'betHistory' as const,
+    icon: 'ticket',
+    titleKey: 'profile.betHistory',
+    descKey: 'profile.betHistoryDesc',
+  },
+  {
+    id: 'affiliate' as const,
+    icon: 'affiliate',
+    titleKey: 'profile.affiliate',
+    descKey: 'profile.affiliateDesc',
+  },
+] as const
+
+const mobileSecondary = [
+  { id: 'vipClub' as const, icon: 'vip', titleKey: 'profile.vipClub' },
+  { id: 'rebate' as const, icon: 'rebate', titleKey: 'profile.rebate' },
+  { id: 'interest' as const, icon: 'interest', titleKey: 'profile.interest' },
+  { id: 'redeem' as const, icon: 'redeem', titleKey: 'profile.redeem' },
+  { id: 'kyc' as const, icon: 'shield', titleKey: 'profile.kyc' },
+  { id: 'setting' as const, icon: 'settings', titleKey: 'profile.setting' },
+] as const
+
 export function PersonalCenter() {
   const { t } = useTranslation()
+  const navigate = useNavigate()
+  const isMobile = useIsMobile()
   const [activeMenu, setActiveMenu] = useState<MenuKey>('transactions')
   const [recordTab, setRecordTab] = useState<RecordTab>('deposit')
   const [currencyTab, setCurrencyTab] = useState<CurrencyTab>('fiat')
+  const [recordDate, setRecordDate] = useState<Dayjs>(() => dayjs('2026-08-05'))
   const [copied, setCopied] = useState(false)
 
-  const username = 'annatest001'
-  const vipLevel = 'VIP3'
+  const username = 'anna22'
+  const vipLevel = 'VIP1'
+  const balance = '2853.00'
 
   const copyAccount = async () => {
     await navigator.clipboard.writeText(username)
@@ -78,6 +118,118 @@ export function PersonalCenter() {
     activeMenu === 'transactions' ||
     activeMenu === 'deposit' ||
     activeMenu === 'withdraw'
+
+  if (isMobile) {
+    return (
+      <div className="profile-mobile">
+        <header className="profile-mobile__nav">
+          <button
+            type="button"
+            className="profile-mobile__nav-btn"
+            aria-label={t('common.prev')}
+            onClick={() => navigate(-1)}
+          >
+            <Icon name="chevron-left" size={22} />
+          </button>
+          <h1>{t('profile.title')}</h1>
+          <button
+            type="button"
+            className="profile-mobile__nav-btn"
+            aria-label={t('common.onlineSupport')}
+          >
+            <Icon name="headset" size={22} />
+          </button>
+        </header>
+
+        <div className="profile-mobile__user">
+          <div className="profile-avatar" />
+          <div className="profile-mobile__user-meta">
+            <div className="profile-account-row">
+              <span>
+                {t('profile.accountLabel')}: {username}
+              </span>
+              <button
+                type="button"
+                className="profile-copy"
+                onClick={() => void copyAccount()}
+                aria-label={t('profile.copySuccess')}
+              >
+                <Icon name="copy" size={14} />
+              </button>
+            </div>
+            {copied ? (
+              <span className="profile-copy-tip">{t('profile.copySuccess')}</span>
+            ) : null}
+            <p>
+              {t('profile.levelLabel')}: {vipLevel}
+            </p>
+          </div>
+          <button
+            type="button"
+            className="profile-mobile__user-more"
+            aria-label={t('profile.personalInfo')}
+          >
+            <Icon name="chevron-right" size={18} />
+          </button>
+        </div>
+
+        <section className="profile-mobile__wallet">
+          <button type="button" className="profile-mobile__balance">
+            <span className="profile-mobile__currency">M$</span>
+            <strong>{balance}</strong>
+            <span className="profile-mobile__refresh" aria-hidden>
+              <Icon name="refresh" size={16} />
+            </span>
+            <Icon name="chevron-right" size={16} />
+          </button>
+          <div className="profile-mobile__actions">
+            {financeMenus.map((item) => (
+              <button type="button" key={item.id} className="profile-mobile__action">
+                <span className="profile-mobile__action-icon">
+                  <Icon name={item.icon} size={22} />
+                </span>
+                <span>{t(`profile.${item.id}`)}</span>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <div className="profile-mobile__primary">
+          {mobilePrimary.map((item) => (
+            <button type="button" key={item.id} className="profile-mobile__primary-item">
+              <span className="profile-mobile__primary-icon">
+                <Icon name={item.icon} size={22} />
+              </span>
+              <span className="profile-mobile__primary-text">
+                <strong>{t(item.titleKey)}</strong>
+                <small>{t(item.descKey)}</small>
+              </span>
+              <Icon name="chevron-right" size={16} />
+            </button>
+          ))}
+        </div>
+
+        <div className="profile-mobile__banner">
+          <div className="profile-mobile__banner-text">
+            <strong>{t('profile.promoBannerTitle')}</strong>
+            <span>{t('profile.promoBannerDesc')}</span>
+          </div>
+          <div className="profile-mobile__banner-art" aria-hidden>
+            <span className="gift-box" />
+          </div>
+        </div>
+
+        <div className="profile-mobile__secondary">
+          {mobileSecondary.map((item) => (
+            <button type="button" key={item.id} className="profile-mobile__secondary-item">
+              <Icon name={item.icon} size={20} />
+              <span>{t(item.titleKey)}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="profile-page">
@@ -196,11 +348,13 @@ export function PersonalCenter() {
                     </button>
                   ))}
                 </div>
-                <button type="button" className="profile-date">
-                  <Icon name="calendar" size={16} />
-                  2026/8/5
-                  <Icon name="chevron-down" size={14} />
-                </button>
+                <AppDatePicker
+                  className="profile-date-picker"
+                  value={recordDate}
+                  onChange={(date) => date && setRecordDate(date)}
+                  placeholder={t('common.selectDate')}
+                  aria-label={t('common.selectDate')}
+                />
               </div>
 
               <div className="profile-panel-inner">

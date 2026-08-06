@@ -179,6 +179,63 @@ export function Icon({ name, size = 20, className }: IconProps) {
           <rect x="8" y="5" width="11" height="15" rx="1.5" />
         </svg>
       )
+    case 'browse':
+      return (
+        <svg {...props}>
+          <rect x="3" y="3" width="7" height="7" rx="1.5" />
+          <rect x="14" y="3" width="7" height="7" rx="1.5" />
+          <rect x="3" y="14" width="7" height="7" rx="1.5" />
+          <rect x="14" y="14" width="7" height="7" rx="1.5" />
+        </svg>
+      )
+    case 'sports':
+      return (
+        <svg {...props}>
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 3c2.5 2.2 4 5.4 4 9s-1.5 6.8-4 9c-2.5-2.2-4-5.4-4-9s1.5-6.8 4-9z" />
+          <path d="M3.5 9.5h17M3.5 14.5h17" />
+        </svg>
+      )
+    case 'live':
+      return (
+        <svg {...props}>
+          <circle cx="12" cy="12" r="9" />
+          <polygon points="10,8 17,12 10,16" fill="currentColor" stroke="none" />
+        </svg>
+      )
+    case 'bets':
+      return (
+        <svg {...props}>
+          <path d="M6 4h9a2 2 0 0 1 2 2v14l-4.5-2.5L8 20V6a2 2 0 0 1 2-2" />
+          <path d="M10 8h5M10 12h4" />
+        </svg>
+      )
+    case 'rebate':
+      return (
+        <svg {...props}>
+          <circle cx="9" cy="14" r="4.5" />
+          <circle cx="15" cy="11" r="4.5" />
+          <circle cx="11" cy="8" r="4" />
+        </svg>
+      )
+    case 'odds':
+      return (
+        <svg {...props}>
+          <circle cx="12" cy="12" r="9" />
+          <path d="M3 12h18" />
+          <path d="M12 3c2.5 2.5 4 5.5 4 9s-1.5 6.5-4 9c-2.5-2.5-4-5.5-4-9s1.5-6.5 4-9z" />
+        </svg>
+      )
+    case 'minigames':
+      return (
+        <svg {...props}>
+          <rect x="3" y="8" width="18" height="10" rx="3" />
+          <circle cx="8" cy="13" r="1.2" fill="currentColor" stroke="none" />
+          <path d="M7 13h2M8 12v2" />
+          <circle cx="15" cy="11.5" r="1" fill="currentColor" stroke="none" />
+          <circle cx="17.5" cy="14" r="1" fill="currentColor" stroke="none" />
+        </svg>
+      )
     case 'lottery':
       return (
         <svg {...props}>
@@ -229,6 +286,60 @@ export function Icon({ name, size = 20, className }: IconProps) {
         <svg {...props}>
           <rect x="9" y="9" width="11" height="11" rx="2" />
           <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+        </svg>
+      )
+    case 'refresh':
+      return (
+        <svg {...props}>
+          <path d="M20 12a8 8 0 1 1-2.2-5.5" />
+          <polyline points="20 4 20 10 14 10" />
+        </svg>
+      )
+    case 'bank-card':
+      return (
+        <svg {...props}>
+          <rect x="3" y="6" width="18" height="12" rx="2" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+          <line x1="7" y1="14" x2="11" y2="14" />
+        </svg>
+      )
+    case 'affiliate':
+      return (
+        <svg {...props}>
+          <circle cx="6" cy="8" r="2.5" />
+          <circle cx="18" cy="8" r="2.5" />
+          <circle cx="12" cy="17" r="2.5" />
+          <path d="M8 9.5l3 5.5M16 9.5l-3 5.5M8.5 8h7" />
+        </svg>
+      )
+    case 'interest':
+      return (
+        <svg {...props}>
+          <rect x="5" y="8" width="14" height="11" rx="2" />
+          <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+          <circle cx="12" cy="13.5" r="1.5" />
+        </svg>
+      )
+    case 'redeem':
+      return (
+        <svg {...props}>
+          <path d="M4 9h16v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9z" />
+          <path d="M4 9l2-4h12l2 4" />
+          <path d="M12 5v16" strokeDasharray="2 2" />
+        </svg>
+      )
+    case 'settings':
+      return (
+        <svg {...props}>
+          <circle cx="12" cy="12" r="3" />
+          <path d="M12 3v2M12 19v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M3 12h2M19 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+        </svg>
+      )
+    case 'shield':
+      return (
+        <svg {...props}>
+          <path d="M12 3l8 3v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-3z" />
+          <path d="M9 12l2 2 4-4" />
         </svg>
       )
     case 'wallet':

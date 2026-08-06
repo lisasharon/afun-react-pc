@@ -13,6 +13,7 @@ const common = {
   prev: '上一页',
   next: '下一页',
   empty: '暂无{{name}}',
+  selectDate: '选择日期',
 } as const
 
 export default common

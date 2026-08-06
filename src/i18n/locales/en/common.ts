@@ -13,6 +13,7 @@ const common = {
   prev: 'Previous',
   next: 'Next',
   empty: 'No {{name}} yet',
+  selectDate: 'Select date',
 } as const
 
 export default common

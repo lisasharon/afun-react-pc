@@ -1,0 +1,19 @@
+.sports-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 40vh;
+  text-align: center;
+}
+
+.sports-page h1 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.sports-page p {
+  font-size: 14px;
+  color: var(--text-dim);
+}

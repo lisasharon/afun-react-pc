@@ -11,8 +11,7 @@ type HeaderProps = {
   betSlipOpen: boolean
   notifyUnread?: number
   betSlipCount?: number
-  onMenuClick?: () => void
-  showMobileMenu?: boolean
+  isMobile?: boolean
 }
 
 function Badge({ count }: { count: number }) {
@@ -29,24 +28,40 @@ export function Header({
   betSlipOpen,
   notifyUnread = 0,
   betSlipCount = 0,
-  onMenuClick,
-  showMobileMenu,
+  isMobile,
 }: HeaderProps) {
   const { t } = useTranslation()
+
+  if (isMobile) {
+    return (
+      <header className="header header--mobile">
+        <a href="/" className="logo" aria-label="betup">
+          <span className="logo-bet">bet</span>
+          <span className="logo-up">up</span>
+        </a>
+
+        <div className="header-auth">
+          <button type="button" className="login-btn">
+            {t('header.login')}
+          </button>
+          <button type="button" className="register-btn">
+            {t('header.register')}
+          </button>
+        </div>
+
+        <button type="button" className="deposit-promo" aria-label={t('header.firstDeposit')}>
+          <span className="deposit-promo__icon" aria-hidden>
+            <Icon name="gift" size={14} />
+          </span>
+          <span className="deposit-promo__text">{t('header.firstDeposit')}</span>
+        </button>
+      </header>
+    )
+  }
 
   return (
     <header className="header">
       <div className="header-left">
-        {showMobileMenu ? (
-          <button
-            type="button"
-            className="mobile-menu-btn"
-            onClick={onMenuClick}
-            aria-label={t('common.openMenu')}
-          >
-            <Icon name="menu" size={22} />
-          </button>
-        ) : null}
         <a href="/" className="logo" aria-label="betup">
           <span className="logo-bet">bet</span>
           <span className="logo-up">up</span>
@@ -65,7 +80,11 @@ export function Header({
         </button>
 
         <div className="header-icons">
-          <button type="button" className="icon-btn" aria-label={t('common.search')}>
+          <button
+            type="button"
+            className="icon-btn icon-btn--search"
+            aria-label={t('common.search')}
+          >
             <Icon name="search" size={20} />
           </button>
           <Link to="/profile" className="icon-btn" aria-label={t('common.profile')}>

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { Icon } from '@/components/Icon'
+import { useIsMobile } from '@/hooks'
 import { formatDateTime } from '@/utils/format'
 import type { AppLang } from '@/i18n'
 import './index.css'
@@ -12,13 +13,26 @@ type SidebarProps = {
   onClose: () => void
 }
 
-const quickLinkKeys = [
+type SidebarMode = 'casino' | 'sports'
+
+const LIVE_COUNT = 109
+
+/** 娱乐城专属 */
+const casinoQuickLinks = [
   { icon: 'game', labelKey: 'sidebar.games' },
   { icon: 'star', labelKey: 'sidebar.favorites' },
   { icon: 'clock', labelKey: 'sidebar.recent' },
 ] as const
 
-const navItems = [
+/** 体育专属 */
+const sportsPrimary = [
+  { icon: 'live', labelKey: 'sidebar.liveBetting', badge: LIVE_COUNT },
+  { icon: 'bets', labelKey: 'sidebar.myBets' },
+  { icon: 'rebate', labelKey: 'sidebar.rebate' },
+] as const
+
+/** 娱乐城 / 体育共用 */
+const sharedFeatures = [
   { icon: 'gift', labelKey: 'sidebar.promotions', to: '/promotion' },
   { icon: 'task', labelKey: 'sidebar.tasks', to: '/tasks' },
   { icon: 'vip', labelKey: 'sidebar.vip', to: '/vip' },
@@ -43,8 +57,13 @@ const languages: { code: AppLang; labelKey: 'sidebar.langZh' | 'sidebar.langEn' 
 
 export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
   const { t, i18n } = useTranslation()
+  const location = useLocation()
+  const isMobile = useIsMobile()
+  const showFullMenu = expanded || isMobile
   const [now, setNow] = useState(() => new Date())
-  const [mode, setMode] = useState<'casino' | 'sports'>('casino')
+  const [mode, setMode] = useState<SidebarMode>(
+    location.pathname.startsWith('/sports') ? 'sports' : 'casino',
+  )
   const [activeCollapsed, setActiveCollapsed] = useState('lobby')
   const [langOpen, setLangOpen] = useState(false)
   const langRef = useRef<HTMLDivElement>(null)
@@ -53,6 +72,10 @@ export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
     const id = window.setInterval(() => setNow(new Date()), 1000)
     return () => window.clearInterval(id)
   }, [])
+
+  useEffect(() => {
+    if (location.pathname.startsWith('/sports')) setMode('sports')
+  }, [location.pathname])
 
   useEffect(() => {
     if (!langOpen) return
@@ -73,6 +96,152 @@ export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
     setLangOpen(false)
   }
 
+  const closeIfMobile = () => {
+    if (isMobile) onClose()
+  }
+
+  /** —— 模式专属 —— */
+  const casinoExclusive = (
+    <>
+      <div className="promo-card referral">
+        <div className="promo-card-body">
+          <p className="promo-title">{t('sidebar.inviteTitle')}</p>
+          <p className="promo-desc">{t('sidebar.inviteDesc')}</p>
+          <button type="button" className="copy-btn">
+            {t('sidebar.copyLink')}
+          </button>
+        </div>
+        <div className="promo-art money-bag" aria-hidden>
+          <span className="bag">$</span>
+        </div>
+      </div>
+
+      <div className="quick-links">
+        {casinoQuickLinks.map((item) => (
+          <button type="button" className="quick-link" key={item.labelKey}>
+            <span className="quick-icon">
+              <Icon name={item.icon} size={22} />
+            </span>
+            <span>{t(item.labelKey)}</span>
+          </button>
+        ))}
+      </div>
+    </>
+  )
+
+  const sportsExclusive = (
+    <>
+      <div className="sidebar-menu-card">
+        {sportsPrimary.map((item) => (
+          <button type="button" className="sidebar-link" key={item.labelKey}>
+            <Icon name={item.icon} size={18} />
+            <span>{t(item.labelKey)}</span>
+            {'badge' in item ? (
+              <span className="sidebar-badge">{item.badge}</span>
+            ) : null}
+          </button>
+        ))}
+      </div>
+
+      <div className="sidebar-menu-card">
+        <button type="button" className="sidebar-link sidebar-link--chevron">
+          <Icon name="sports" size={18} />
+          <span>{t('sidebar.sportEvents')}</span>
+          <Icon name="chevron-right" size={16} />
+        </button>
+      </div>
+
+      <div className="sidebar-menu-card">
+        <button type="button" className="sidebar-link sidebar-link--chevron">
+          <Icon name="odds" size={18} />
+          <span>{t('sidebar.oddsFormat')}</span>
+          <Icon name="chevron-right" size={16} />
+        </button>
+      </div>
+    </>
+  )
+
+  /** —— 共用：促销 / 任务 / VIP / 博客 —— */
+  const sharedFeatureNav = (
+    <nav className="sidebar-menu-card">
+      {sharedFeatures.map((item) => (
+        <NavLink
+          to={item.to}
+          key={item.labelKey}
+          className={({ isActive }) =>
+            isActive ? 'sidebar-link active' : 'sidebar-link'
+          }
+          onClick={closeIfMobile}
+        >
+          <Icon name={item.icon} size={18} />
+          <span>{t(item.labelKey)}</span>
+        </NavLink>
+      ))}
+    </nav>
+  )
+
+  /** —— 共用：下载 APP —— */
+  const sharedAppDownload = (
+    <div className="promo-card app-download">
+      <div className="promo-card-body">
+        <p className="promo-title">{t('sidebar.downloadTitle')}</p>
+        <p className="promo-desc">{t('sidebar.downloadDesc')}</p>
+      </div>
+      <div className="promo-art phones" aria-hidden>
+        <span className="phone phone-1" />
+        <span className="phone phone-2" />
+      </div>
+    </div>
+  )
+
+  const langMenu = langOpen ? (
+    <div className="lang-menu" role="listbox">
+      {languages.map((lang) => (
+        <button
+          key={lang.code}
+          type="button"
+          role="option"
+          aria-selected={currentLang === lang.code}
+          className={currentLang === lang.code ? 'active' : ''}
+          onClick={() => switchLang(lang.code)}
+        >
+          {t(lang.labelKey)}
+        </button>
+      ))}
+    </div>
+  ) : null
+
+  /** —— 共用：帮助 / 客服 / 语言 / 时间 —— */
+  const sharedFooter = (
+    <div className="sidebar-menu-card sidebar-menu-card--footer" ref={langRef}>
+      <button type="button" className="sidebar-link">
+        <Icon name="help" size={18} />
+        <span>{t('common.help')}</span>
+      </button>
+      <button type="button" className="sidebar-link">
+        <Icon name="headset" size={18} />
+        <span>{t('common.onlineSupport')}</span>
+      </button>
+      <button
+        type="button"
+        className="sidebar-link sidebar-link--chevron"
+        aria-expanded={langOpen}
+        onClick={() => setLangOpen((v) => !v)}
+      >
+        <Icon name="globe" size={18} />
+        <span>
+          {t('common.language')}: {currentLangLabel}
+        </span>
+        <Icon name="chevron-right" size={16} />
+      </button>
+      {langMenu}
+      <div className="sidebar-time">
+        <Icon name="clock" size={16} />
+        <time dateTime={now.toISOString()}>{formatDateTime(now)}</time>
+      </div>
+    </div>
+  )
+
   return (
     <>
       <div
@@ -81,8 +250,9 @@ export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
         aria-hidden={!expanded}
       />
       <aside
-        className={`sidebar ${expanded ? 'expanded' : 'collapsed'}`}
+        className={`sidebar ${expanded ? 'expanded' : 'collapsed'} mode-${mode}`}
         aria-label={t('sidebar.nav')}
+        aria-hidden={isMobile ? !expanded : undefined}
       >
         <div className="sidebar-top">
           <button
@@ -96,8 +266,8 @@ export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
             <Icon name="menu" size={22} />
           </button>
 
-          {expanded ? (
-            <div className="sidebar-mode">
+          {showFullMenu ? (
+            <div className={`sidebar-mode sidebar-mode--${mode}`}>
               <button
                 type="button"
                 className={mode === 'casino' ? 'active' : ''}
@@ -116,103 +286,12 @@ export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
           ) : null}
         </div>
 
-        {expanded ? (
+        {showFullMenu ? (
           <>
-            <div className="promo-card referral">
-              <div className="promo-card-body">
-                <p className="promo-title">{t('sidebar.inviteTitle')}</p>
-                <p className="promo-desc">{t('sidebar.inviteDesc')}</p>
-                <button type="button" className="copy-btn">
-                  {t('sidebar.copyLink')}
-                </button>
-              </div>
-              <div className="promo-art money-bag" aria-hidden>
-                <span className="bag">$</span>
-              </div>
-            </div>
-
-            <div className="quick-links">
-              {quickLinkKeys.map((item) => (
-                <button type="button" className="quick-link" key={item.labelKey}>
-                  <span className="quick-icon">
-                    <Icon name={item.icon} size={22} />
-                  </span>
-                  <span>{t(item.labelKey)}</span>
-                </button>
-              ))}
-            </div>
-
-            <nav className="sidebar-nav">
-              {navItems.map((item) => (
-                <NavLink
-                  to={item.to}
-                  key={item.labelKey}
-                  className={({ isActive }) =>
-                    isActive ? 'sidebar-link active' : 'sidebar-link'
-                  }
-                >
-                  <Icon name={item.icon} size={18} />
-                  {t(item.labelKey)}
-                </NavLink>
-              ))}
-            </nav>
-
-            <div className="promo-card app-download">
-              <div className="promo-card-body">
-                <p className="promo-title">{t('sidebar.downloadTitle')}</p>
-                <p className="promo-desc">{t('sidebar.downloadDesc')}</p>
-              </div>
-              <div className="promo-art phones" aria-hidden>
-                <span className="phone phone-1" />
-                <span className="phone phone-2" />
-              </div>
-            </div>
-
-            <div className="sidebar-footer">
-              <div className="footer-links">
-                <button type="button">
-                  <Icon name="help" size={16} />
-                  {t('common.help')}
-                </button>
-                <button type="button">
-                  <Icon name="headset" size={16} />
-                  {t('common.onlineSupport')}
-                </button>
-              </div>
-
-              <div className="lang-switcher" ref={langRef}>
-                <button
-                  type="button"
-                  className="lang-btn"
-                  aria-expanded={langOpen}
-                  onClick={() => setLangOpen((v) => !v)}
-                >
-                  <Icon name="globe" size={16} />
-                  {t('common.language')}: {currentLangLabel}
-                  <Icon name="chevron-down" size={14} />
-                </button>
-                {langOpen ? (
-                  <div className="lang-menu" role="listbox">
-                    {languages.map((lang) => (
-                      <button
-                        key={lang.code}
-                        type="button"
-                        role="option"
-                        aria-selected={currentLang === lang.code}
-                        className={currentLang === lang.code ? 'active' : ''}
-                        onClick={() => switchLang(lang.code)}
-                      >
-                        {t(lang.labelKey)}
-                      </button>
-                    ))}
-                  </div>
-                ) : null}
-              </div>
-
-              <time className="clock" dateTime={now.toISOString()}>
-                {formatDateTime(now)}
-              </time>
-            </div>
+            {mode === 'sports' ? sportsExclusive : casinoExclusive}
+            {sharedFeatureNav}
+            {sharedAppDownload}
+            {sharedFooter}
           </>
         ) : (
           <nav className="collapsed-nav">

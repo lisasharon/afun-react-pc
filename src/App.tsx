@@ -1,10 +1,13 @@
 import { BrowserRouter } from 'react-router-dom'
 import { AppRouter } from '@/router'
+import { AntdProvider } from '@/providers/AntdProvider'
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <AppRouter />
-    </BrowserRouter>
+    <AntdProvider>
+      <BrowserRouter>
+        <AppRouter />
+      </BrowserRouter>
+    </AntdProvider>
   )
 }

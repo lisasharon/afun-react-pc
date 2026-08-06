@@ -2,6 +2,7 @@ import common from './common'
 import header from './header'
 import sidebar from './sidebar'
 import home from './home'
+import nav from './nav'
 import message from './message'
 import betSlip from './betSlip'
 import banners from './banners'
@@ -18,6 +19,7 @@ const zhCN = {
   header,
   sidebar,
   home,
+  nav,
   message,
   betSlip,
   banners,

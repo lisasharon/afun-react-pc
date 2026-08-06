@@ -91,7 +91,7 @@ export function Footer() {
         ))}
       </div>
 
-      <div className="site-footer__odds">
+      {/* <div className="site-footer__odds">
         <span>{t('footer.odds')}</span>
         <div className="site-footer__odds-switch">
           <button
@@ -120,7 +120,7 @@ export function Footer() {
             </div>
           ) : null}
         </div>
-      </div>
+      </div> */}
 
       <div className="site-footer__divider" />
 
