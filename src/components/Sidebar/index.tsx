@@ -4,6 +4,7 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { Icon } from '@/components/Icon'
 import { useIsMobile } from '@/hooks'
 import { formatDateTime } from '@/utils/format'
+import { copyText } from '@/utils/copy'
 import type { AppLang } from '@/i18n'
 import './index.css'
 
@@ -100,6 +101,12 @@ export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
     if (isMobile) onClose()
   }
 
+  const inviteLink = `${window.location.origin}/invite`
+
+  const copyInviteLink = () => {
+    void copyText(inviteLink, t('common.copySuccess'), t('common.copyFailed'))
+  }
+
   /** —— 模式专属 —— */
   const casinoExclusive = (
     <>
@@ -107,7 +114,7 @@ export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
         <div className="promo-card-body">
           <p className="promo-title">{t('sidebar.inviteTitle')}</p>
           <p className="promo-desc">{t('sidebar.inviteDesc')}</p>
-          <button type="button" className="copy-btn">
+          <button type="button" className="copy-btn" onClick={copyInviteLink}>
             {t('sidebar.copyLink')}
           </button>
         </div>

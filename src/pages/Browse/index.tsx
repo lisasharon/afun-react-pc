@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
 import { Icon } from '@/components/Icon'
 import { formatDateTime } from '@/utils/format'
+import { copyText } from '@/utils/copy'
 import type { AppLang } from '@/i18n'
 import './index.css'
 
@@ -70,6 +71,12 @@ export function Browse() {
     setLangOpen(false)
   }
 
+  const inviteLink = `${window.location.origin}/invite`
+
+  const copyInviteLink = () => {
+    void copyText(inviteLink, t('common.copySuccess'), t('common.copyFailed'))
+  }
+
   return (
     <section className="browse-page">
       <div className="browse-search">
@@ -106,7 +113,11 @@ export function Browse() {
             <div className="browse-promo__body">
               <p className="browse-promo__title">{t('sidebar.inviteTitle')}</p>
               <p className="browse-promo__desc">{t('sidebar.inviteDesc')}</p>
-              <button type="button" className="browse-promo__btn">
+              <button
+                type="button"
+                className="browse-promo__btn"
+                onClick={copyInviteLink}
+              >
                 {t('sidebar.copyLink')}
               </button>
             </div>

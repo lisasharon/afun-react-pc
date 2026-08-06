@@ -14,6 +14,8 @@ const common = {
   next: 'Next',
   empty: 'No {{name}} yet',
   selectDate: 'Select date',
+  copySuccess: 'Copied successfully',
+  copyFailed: 'Copy failed',
 } as const
 
 export default common

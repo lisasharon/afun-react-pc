@@ -5,6 +5,7 @@ import dayjs, { type Dayjs } from 'dayjs'
 import { Icon } from '@/components/Icon'
 import { AppDatePicker } from '@/components/AppDatePicker'
 import { useIsMobile } from '@/hooks'
+import { copyText } from '@/utils/copy'
 import './index.css'
 
 type MenuKey =
@@ -92,16 +93,17 @@ export function PersonalCenter() {
   const [recordTab, setRecordTab] = useState<RecordTab>('deposit')
   const [currencyTab, setCurrencyTab] = useState<CurrencyTab>('fiat')
   const [recordDate, setRecordDate] = useState<Dayjs>(() => dayjs('2026-08-05'))
-  const [copied, setCopied] = useState(false)
 
   const username = 'anna22'
   const vipLevel = 'VIP1'
   const balance = '2853.00'
 
-  const copyAccount = async () => {
-    await navigator.clipboard.writeText(username)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 1500)
+  const copyAccount = () => {
+    void copyText(
+      username,
+      t('common.copySuccess'),
+      t('common.copyFailed'),
+    )
   }
 
   const getEmptyText = () => {
@@ -151,15 +153,12 @@ export function PersonalCenter() {
               <button
                 type="button"
                 className="profile-copy"
-                onClick={() => void copyAccount()}
-                aria-label={t('profile.copySuccess')}
+                onClick={copyAccount}
+                aria-label={t('common.copySuccess')}
               >
                 <Icon name="copy" size={14} />
               </button>
             </div>
-            {copied ? (
-              <span className="profile-copy-tip">{t('profile.copySuccess')}</span>
-            ) : null}
             <p>
               {t('profile.levelLabel')}: {vipLevel}
             </p>
@@ -251,14 +250,11 @@ export function PersonalCenter() {
                   type="button"
                   className="profile-copy"
                   onClick={copyAccount}
-                  aria-label={t('profile.copySuccess')}
+                  aria-label={t('common.copySuccess')}
                 >
                   <Icon name="copy" size={14} />
                 </button>
               </div>
-              {copied ? (
-                <span className="profile-copy-tip">{t('profile.copySuccess')}</span>
-              ) : null}
               <p>
                 {t('profile.levelLabel')}: {vipLevel}
               </p>

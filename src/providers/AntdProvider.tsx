@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ConfigProvider, theme } from 'antd'
+import { ConfigProvider, App as AntdApp, theme } from 'antd'
 import enUS from 'antd/locale/en_US'
 import zhCN from 'antd/locale/zh_CN'
 import dayjs from 'dayjs'
@@ -59,7 +59,7 @@ export function AntdProvider({ children }: AntdProviderProps) {
         },
       }}
     >
-      {children}
+      <AntdApp>{children}</AntdApp>
     </ConfigProvider>
   )
 }

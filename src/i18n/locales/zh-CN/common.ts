@@ -14,6 +14,8 @@ const common = {
   next: '下一页',
   empty: '暂无{{name}}',
   selectDate: '选择日期',
+  copySuccess: '复制成功',
+  copyFailed: '复制失败',
 } as const
 
 export default common
