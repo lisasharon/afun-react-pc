@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
-import { Outlet } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { Outlet, useLocation } from 'react-router-dom'
 import { Sidebar } from '@/components/Sidebar'
 import { Header } from '@/components/Header'
 import { MessageCenter } from '@/components/MessageCenter'
 import { BetSlip } from '@/components/BetSlip'
 import { FloatingSupport } from '@/components/FloatingSupport'
+import { Footer } from '@/components/Footer'
 import { useIsMobile } from '@/hooks'
 import { betSlipMock } from '@/mock/bets'
 import { messagesMock } from '@/mock/messages'
@@ -13,6 +14,8 @@ import { countUnread, type MessageItem, type MessageType } from '@/types/message
 import './index.css'
 
 export function MainLayout() {
+  const location = useLocation()
+  const pageRef = useRef<HTMLElement>(null)
   const isMobile = useIsMobile()
   const [sidebarExpanded, setSidebarExpanded] = useState(true)
   const [messagesOpen, setMessagesOpen] = useState(false)
@@ -24,6 +27,10 @@ export function MainLayout() {
   useEffect(() => {
     setSidebarExpanded(!isMobile)
   }, [isMobile])
+
+  useEffect(() => {
+    pageRef.current?.scrollTo({ top: 0, left: 0 })
+  }, [location.pathname])
 
   const notifyUnread = countUnread(messages)
   const betSlipCount = betItems.length
@@ -86,8 +93,11 @@ export function MainLayout() {
           showMobileMenu={isMobile}
           onMenuClick={toggleSidebar}
         />
-        <main className="main-layout__page">
-          <Outlet />
+        <main className="main-layout__page" ref={pageRef}>
+          <div className="main-layout__page-body">
+            <Outlet />
+          </div>
+          <Footer />
         </main>
       </div>
       <MessageCenter

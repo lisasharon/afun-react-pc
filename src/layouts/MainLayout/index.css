@@ -31,10 +31,17 @@
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 20px 24px 40px;
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.main-layout__page-body {
   display: flex;
   flex-direction: column;
   gap: 22px;
+  flex: 1 0 auto;
 }
 
 @media (max-width: 1100px) {
@@ -55,6 +62,9 @@
 
   .main-layout__page {
     padding: 16px 14px 80px;
+  }
+
+  .main-layout__page-body {
     gap: 18px;
   }
 }

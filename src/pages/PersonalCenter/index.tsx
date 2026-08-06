@@ -14,6 +14,10 @@ type MenuKey =
   | 'redeem'
   | 'rebate'
   | 'personalInfo'
+  | 'kycInfo'
+  | 'setting'
+  | 'selfExclusion'
+  | 'logOut'
 
 type RecordTab = 'deposit' | 'withdraw' | 'other'
 type CurrencyTab = 'fiat' | 'crypto'

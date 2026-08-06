@@ -263,6 +263,44 @@ export function Icon({ name, size = 20, className }: IconProps) {
           <line x1="15" y1="3" x2="15" y2="7" />
         </svg>
       )
+    case 'facebook':
+      return (
+        <svg {...props} fill="currentColor" stroke="none">
+          <path d="M14 9h3V6h-3c-1.7 0-3 1.3-3 3v2H8v3h3v7h3v-7h3l1-3h-4V9c0-.6.4-1 1-1z" />
+        </svg>
+      )
+    case 'instagram':
+      return (
+        <svg {...props}>
+          <rect x="3" y="3" width="18" height="18" rx="5" />
+          <circle cx="12" cy="12" r="4" />
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+        </svg>
+      )
+    case 'telegram':
+      return (
+        <svg {...props} fill="currentColor" stroke="none">
+          <path d="M21 5L3.5 12.5 8 14l1.5 5L12 16l5.5 4L21 5zM9.5 13.5l7.8-5.2-6.2 6.6-.4 2.1-1.2-3.5z" />
+        </svg>
+      )
+    case 'tiktok':
+      return (
+        <svg {...props} fill="currentColor" stroke="none">
+          <path d="M14 4c.8 1.8 2.2 3 4 3.4V10c-1.6-.1-3-.7-4-1.7V15a5 5 0 1 1-5-5v2.2a2.8 2.8 0 1 0 2.8 2.8V4h2.2z" />
+        </svg>
+      )
+    case 'x':
+      return (
+        <svg {...props} fill="currentColor" stroke="none">
+          <path d="M4 4l6.8 8.7L4.6 20H7l5-6.2L16.8 20H20l-7-9 6.4-7H17l-4.6 5.7L8.2 4H4z" />
+        </svg>
+      )
+    case 'youtube':
+      return (
+        <svg {...props} fill="currentColor" stroke="none">
+          <path d="M21.5 8.2a2.6 2.6 0 0 0-1.8-1.8C18 6 12 6 12 6s-6 0-7.7.4A2.6 2.6 0 0 0 2.5 8.2 27 27 0 0 0 2 12a27 27 0 0 0 .5 3.8 2.6 2.6 0 0 0 1.8 1.8C6 18 12 18 12 18s6 0 7.7-.4a2.6 2.6 0 0 0 1.8-1.8A27 27 0 0 0 22 12a27 27 0 0 0-.5-3.8zM10 15V9l5 3-5 3z" />
+        </svg>
+      )
     default:
       return null
   }

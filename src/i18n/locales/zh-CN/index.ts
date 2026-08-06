@@ -11,6 +11,7 @@ import bets from './bets'
 import profile from './profile'
 import promotion from './promotion'
 import promotions from './promotions'
+import footer from './footer'
 
 const zhCN = {
   common,
@@ -26,6 +27,7 @@ const zhCN = {
   profile,
   promotion,
   promotions,
+  footer,
 } as const
 
 export default zhCN
