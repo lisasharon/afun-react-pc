@@ -70,6 +70,7 @@ export function MainLayout() {
   const clearBets = () => setBetItems([])
 
   const panelOpen = messagesOpen || betSlipOpen
+  const isProfileRoute = location.pathname.startsWith('/profile')
 
   const layoutClass = [
     'main-layout',
@@ -92,7 +93,7 @@ export function MainLayout() {
         />
       ) : null}
       <div className="main-layout__content">
-        {!(isMobile && location.pathname === '/profile') ? (
+        {!(isMobile && isProfileRoute) ? (
           <Header
             onOpenMessages={openMessages}
             onOpenBetSlip={openBetSlip}
@@ -104,14 +105,14 @@ export function MainLayout() {
           />
         ) : null}
         <main
-          className={`main-layout__page ${isMobile && location.pathname === '/profile' ? 'main-layout__page--flush' : ''}`}
+          className={`main-layout__page ${isMobile && isProfileRoute ? 'main-layout__page--flush' : ''}`}
           ref={pageRef}
         >
           <div className="main-layout__page-body">
             <Outlet />
           </div>
           {/* 右侧主内容区公共底部：桌面全站显示；移动端个人中心也显示 */}
-          {!isMobile || location.pathname === '/profile' ? <Footer /> : null}
+          {!isMobile || isProfileRoute ? <Footer /> : null}
         </main>
       </div>
       {!isMobile ? (
@@ -133,9 +134,7 @@ export function MainLayout() {
           />
         </>
       ) : null}
-      {isMobile &&
-      location.pathname !== '/browse' &&
-      location.pathname !== '/profile' ? (
+      {isMobile && location.pathname !== '/browse' && !isProfileRoute ? (
         <FloatingSupport />
       ) : null}
       {isMobile ? <BottomNav /> : null}

@@ -35,7 +35,7 @@ const profile = {
   emptyWithdraw: '暂无提款记录',
   emptyOther: '暂无其他记录',
   emptyBetHistory: '暂无投注记录',
-  placeholder: '功能开发中',
+  placeholder: '开发中',
 } as const
 
 export default profile

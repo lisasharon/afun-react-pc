@@ -169,7 +169,12 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
+}
+
+.message-list li{
+  background: var(--bg-elevated);
+  border-radius: var(--radius-sm);
 }
 
 .message-item {
