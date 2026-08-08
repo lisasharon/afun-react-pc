@@ -71,6 +71,12 @@ export function MainLayout() {
 
   const panelOpen = messagesOpen || betSlipOpen
   const isProfileRoute = location.pathname.startsWith('/profile')
+  const hideFooter =
+    isMobile &&
+    (isProfileRoute ||
+      location.pathname.startsWith('/browse') ||
+      location.pathname.startsWith('/sports') ||
+      location.pathname.startsWith('/promotion'))
 
   const layoutClass = [
     'main-layout',
@@ -111,8 +117,8 @@ export function MainLayout() {
           <div className="main-layout__page-body">
             <Outlet />
           </div>
-          {/* 右侧主内容区公共底部：桌面全站显示；移动端个人中心也显示 */}
-          {!isMobile || isProfileRoute ? <Footer /> : null}
+          {/* 桌面全站 Footer；移动端仅娱乐城显示，浏览/体育/优惠/个人中心不显示 */}
+          {!hideFooter ? <Footer /> : null}
         </main>
       </div>
       {!isMobile ? (
