@@ -1,6 +1,8 @@
 const home = {
   banners: '促销横幅',
   searchGames: '搜索游戏',
+  recentSearches: '近期搜索',
+  clearSearches: '清除搜索({{count}})',
   gameCategories: '游戏分类',
   hotGames: '热门游戏',
   lobby: '大厅',

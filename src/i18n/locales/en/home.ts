@@ -1,6 +1,8 @@
 const home = {
   banners: 'Promo banners',
   searchGames: 'Search games',
+  recentSearches: 'Recent searches',
+  clearSearches: 'Clear ({{count}})',
   gameCategories: 'Game categories',
   hotGames: 'Hot Games',
   lobby: 'Lobby',

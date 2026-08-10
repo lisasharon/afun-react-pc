@@ -32,8 +32,118 @@
   font-size: 14px;
 }
 
+.browse-search input::-webkit-search-cancel-button {
+  display: none;
+}
+
 .browse-search input::placeholder {
   color: var(--text-dim);
+}
+
+.browse-search__clear {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.browse-search__clear:active {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.browse-page.is-searching {
+  min-height: calc(100% - 8px);
+}
+
+.browse-search-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+}
+
+.browse-recent__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.browse-recent__head h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.browse-recent__head > button {
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.browse-recent__head > button:active {
+  color: var(--text);
+}
+
+.browse-recent__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+}
+
+.browse-recent__tags li {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  height: 32px;
+  padding: 0 8px 0 12px;
+  border-radius: 8px;
+  background: #2a323c;
+  gap: 6px;
+}
+
+.browse-recent__tag {
+  min-width: 0;
+  font-size: 13px;
+  color: var(--text);
+  text-align: left;
+}
+
+.browse-recent__tag span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 160px;
+}
+
+.browse-recent__remove {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  border-radius: 999px;
+}
+
+.browse-recent__remove:active {
+  color: var(--text);
+}
+
+.browse-search-panel__empty {
+  flex: 1;
+  min-height: 120px;
 }
 
 .browse-mode {
