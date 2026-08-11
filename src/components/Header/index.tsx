@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { Icon } from '@/components/Icon'
+import { AUTH } from '@/mock/auth'
 import type { MessageType } from '@/types/message'
 import './index.css'
 
@@ -21,6 +22,21 @@ function Badge({ count }: { count: number }) {
   )
 }
 
+function GuestActions() {
+  const { t } = useTranslation()
+
+  return (
+    <div className="header-auth">
+      <button type="button" className="login-btn">
+        {t('header.login')}
+      </button>
+      <button type="button" className="register-btn">
+        {t('header.register')}
+      </button>
+    </div>
+  )
+}
+
 export function Header({
   onOpenMessages,
   onOpenBetSlip,
@@ -31,6 +47,7 @@ export function Header({
   isMobile,
 }: HeaderProps) {
   const { t } = useTranslation()
+  const loggedIn = AUTH.isLoggedIn
 
   if (isMobile) {
     return (
@@ -40,21 +57,48 @@ export function Header({
           <span className="logo-up">up</span>
         </a>
 
-        <div className="header-auth">
-          <button type="button" className="login-btn">
-            {t('header.login')}
-          </button>
-          <button type="button" className="register-btn">
-            {t('header.register')}
-          </button>
-        </div>
-
-        <button type="button" className="deposit-promo" aria-label={t('header.firstDeposit')}>
-          <span className="deposit-promo__icon" aria-hidden>
-            <Icon name="gift" size={14} />
-          </span>
-          <span className="deposit-promo__text">{t('header.firstDeposit')}</span>
-        </button>
+        {loggedIn ? (
+          <div className="header-actions">
+            <button type="button" className="balance-btn">
+              <span className="balance-currency">{AUTH.currency}</span>
+              <span className="balance-amount">{AUTH.balance}</span>
+            </button>
+            <Link
+              to="/profile/deposit"
+              className="deposit-plus"
+              aria-label={t('header.deposit')}
+            >
+              <Icon name="plus" size={16} />
+            </Link>
+            <button
+              type="button"
+              className={`icon-btn ${messagesOpen ? 'active' : ''}`}
+              aria-label={
+                notifyUnread > 0
+                  ? t('header.messageCenterUnread', { count: notifyUnread })
+                  : t('header.messageCenter')
+              }
+              onClick={() => onOpenMessages('notify')}
+            >
+              <Icon name="bell" size={20} />
+              <Badge count={notifyUnread} />
+            </button>
+          </div>
+        ) : (
+          <>
+            <GuestActions />
+            <button
+              type="button"
+              className="deposit-promo"
+              aria-label={t('header.firstDeposit')}
+            >
+              <span className="deposit-promo__icon" aria-hidden>
+                <Icon name="gift" size={14} />
+              </span>
+              <span className="deposit-promo__text">{t('header.firstDeposit')}</span>
+            </button>
+          </>
+        )}
       </header>
     )
   }
@@ -68,56 +112,60 @@ export function Header({
         </a>
       </div>
 
-      <div className="header-actions">
-        <button type="button" className="balance-btn">
-          <span className="balance-amount">1382.51</span>
-          <span className="balance-currency">¥</span>
-          <Icon name="chevron-down" size={14} />
-        </button>
+      {loggedIn ? (
+        <div className="header-actions">
+          <button type="button" className="balance-btn">
+            <span className="balance-amount">{AUTH.balance}</span>
+            <span className="balance-currency">{AUTH.currency}</span>
+            <Icon name="chevron-down" size={14} />
+          </button>
 
-        <button type="button" className="deposit-btn">
-          {t('header.deposit')}
-        </button>
+          <button type="button" className="deposit-btn">
+            {t('header.deposit')}
+          </button>
 
-        <div className="header-icons">
-          <button
-            type="button"
-            className="icon-btn icon-btn--search"
-            aria-label={t('common.search')}
-          >
-            <Icon name="search" size={20} />
-          </button>
-          <Link to="/profile" className="icon-btn" aria-label={t('common.profile')}>
-            <Icon name="user" size={20} />
-          </Link>
-          <button
-            type="button"
-            className={`icon-btn ${messagesOpen ? 'active' : ''}`}
-            aria-label={
-              notifyUnread > 0
-                ? t('header.messageCenterUnread', { count: notifyUnread })
-                : t('header.messageCenter')
-            }
-            onClick={() => onOpenMessages('notify')}
-          >
-            <Icon name="bell" size={20} />
-            <Badge count={notifyUnread} />
-          </button>
-          <button
-            type="button"
-            className={`icon-btn ${betSlipOpen ? 'active' : ''}`}
-            aria-label={
-              betSlipCount > 0
-                ? t('header.betSlipCount', { count: betSlipCount })
-                : t('header.betSlip')
-            }
-            onClick={onOpenBetSlip}
-          >
-            <Icon name="ticket" size={20} />
-            <Badge count={betSlipCount} />
-          </button>
+          <div className="header-icons">
+            <button
+              type="button"
+              className="icon-btn icon-btn--search"
+              aria-label={t('common.search')}
+            >
+              <Icon name="search" size={20} />
+            </button>
+            <Link to="/profile" className="icon-btn" aria-label={t('common.profile')}>
+              <Icon name="user" size={20} />
+            </Link>
+            <button
+              type="button"
+              className={`icon-btn ${messagesOpen ? 'active' : ''}`}
+              aria-label={
+                notifyUnread > 0
+                  ? t('header.messageCenterUnread', { count: notifyUnread })
+                  : t('header.messageCenter')
+              }
+              onClick={() => onOpenMessages('notify')}
+            >
+              <Icon name="bell" size={20} />
+              <Badge count={notifyUnread} />
+            </button>
+            <button
+              type="button"
+              className={`icon-btn ${betSlipOpen ? 'active' : ''}`}
+              aria-label={
+                betSlipCount > 0
+                  ? t('header.betSlipCount', { count: betSlipCount })
+                  : t('header.betSlip')
+              }
+              onClick={onOpenBetSlip}
+            >
+              <Icon name="ticket" size={20} />
+              <Badge count={betSlipCount} />
+            </button>
+          </div>
         </div>
-      </div>
+      ) : (
+        <GuestActions />
+      )}
     </header>
   )
 }

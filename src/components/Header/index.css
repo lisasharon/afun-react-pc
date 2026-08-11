@@ -156,6 +156,41 @@
   font-size: 22px;
 }
 
+.header--mobile .header-actions {
+  gap: 4px;
+}
+
+.header--mobile .balance-btn {
+  padding: 4px 6px;
+  min-height: 36px;
+  font-size: 14px;
+}
+
+.header--mobile .balance-btn svg {
+  display: none;
+}
+
+.header--mobile .icon-btn {
+  width: 36px;
+  height: 36px;
+}
+
+.deposit-plus {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--green);
+  color: #0a120c;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.deposit-plus:active {
+  transform: scale(0.96);
+}
+
 .header-auth {
   display: flex;
   align-items: center;
