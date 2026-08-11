@@ -1,7 +1,6 @@
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { AuthModal, type AuthMode } from '@/components/AuthModal'
+import type { AuthMode } from '@/components/AuthModal'
 import { Icon } from '@/components/Icon'
 import { AUTH } from '@/mock/auth'
 import type { MessageType } from '@/types/message'
@@ -10,6 +9,7 @@ import './index.css'
 type HeaderProps = {
   onOpenMessages: (tab?: MessageType) => void
   onOpenBetSlip: () => void
+  onOpenAuth: (mode: AuthMode) => void
   messagesOpen: boolean
   betSlipOpen: boolean
   notifyUnread?: number
@@ -46,6 +46,7 @@ function GuestActions({ onOpen }: { onOpen: (mode: AuthMode) => void }) {
 export function Header({
   onOpenMessages,
   onOpenBetSlip,
+  onOpenAuth,
   messagesOpen,
   betSlipOpen,
   notifyUnread = 0,
@@ -54,20 +55,9 @@ export function Header({
 }: HeaderProps) {
   const { t } = useTranslation()
   const loggedIn = AUTH.isLoggedIn
-  const [authMode, setAuthMode] = useState<AuthMode | null>(null)
-
-  const authModal = (
-    <AuthModal
-      open={authMode !== null}
-      mode={authMode ?? 'login'}
-      onClose={() => setAuthMode(null)}
-      onSwitchMode={setAuthMode}
-    />
-  )
 
   if (isMobile) {
     return (
-      <>
       <header className="header header--mobile">
         <a href="/" className="logo" aria-label="betup">
           <span className="logo-bet">bet</span>
@@ -103,7 +93,7 @@ export function Header({
           </div>
         ) : (
           <>
-            <GuestActions onOpen={setAuthMode} />
+            <GuestActions onOpen={onOpenAuth} />
             <button
               type="button"
               className="deposit-promo"
@@ -117,13 +107,10 @@ export function Header({
           </>
         )}
       </header>
-      {authModal}
-      </>
     )
   }
 
   return (
-    <>
     <header className="header">
       <div className="header-left">
         <a href="/" className="logo" aria-label="betup">
@@ -184,10 +171,8 @@ export function Header({
           </div>
         </div>
       ) : (
-        <GuestActions onOpen={setAuthMode} />
+        <GuestActions onOpen={onOpenAuth} />
       )}
     </header>
-    {authModal}
-    </>
   )
 }

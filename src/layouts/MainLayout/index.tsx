@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
+import { AuthModal, type AuthMode } from '@/components/AuthModal'
 import { Sidebar } from '@/components/Sidebar'
 import { Header } from '@/components/Header'
 import { BottomNav } from '@/components/BottomNav'
@@ -24,6 +25,7 @@ export function MainLayout() {
   const [messages, setMessages] = useState<MessageItem[]>(messagesMock)
   const [messageTab, setMessageTab] = useState<MessageType>('notify')
   const [betItems, setBetItems] = useState<BetSlipItem[]>(betSlipMock)
+  const [authMode, setAuthMode] = useState<AuthMode | null>(null)
 
   useEffect(() => {
     setSidebarExpanded(!isMobile)
@@ -34,6 +36,7 @@ export function MainLayout() {
     if (isMobile) setSidebarExpanded(false)
     setMessagesOpen(false)
     setBetSlipOpen(false)
+    setAuthMode(null)
   }, [location.pathname, isMobile])
 
   const notifyUnread = countUnread(messages)
@@ -108,6 +111,7 @@ export function MainLayout() {
             notifyUnread={notifyUnread}
             betSlipCount={betSlipCount}
             isMobile={isMobile}
+            onOpenAuth={setAuthMode}
           />
         ) : null}
         <main
@@ -143,7 +147,13 @@ export function MainLayout() {
       {isMobile && location.pathname !== '/browse' && !isProfileRoute ? (
         <FloatingSupport />
       ) : null}
-      {isMobile ? <BottomNav /> : null}
+      {isMobile ? <BottomNav onOpenAuth={setAuthMode} /> : null}
+      <AuthModal
+        open={authMode !== null}
+        mode={authMode ?? 'login'}
+        onClose={() => setAuthMode(null)}
+        onSwitchMode={setAuthMode}
+      />
     </div>
   )
 }
