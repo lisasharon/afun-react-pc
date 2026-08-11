@@ -338,7 +338,7 @@
   transition: background 0.15s;
 }
 
-.browse-link span {
+.browse-link > span:not(.browse-badge) {
   flex: 1;
 }
 
@@ -359,7 +359,9 @@
 .browse-badge {
   margin-left: auto;
   flex: 0 0 auto;
+  align-self: center;
   min-width: 28px;
+  width: auto;
   height: 22px;
   padding: 0 7px;
   border-radius: 999px;
@@ -414,6 +416,9 @@
 
 @media (min-width: 961px) {
   .browse-page {
-    max-width: 480px;
+    width: 100%;
+    max-width: 180px;
+    /* 父级 .main-layout__page-body 是纵向 flex，默认 stretch 会把宽度拉满，盖掉 max-width */
+    align-self: flex-start;
   }
 }
