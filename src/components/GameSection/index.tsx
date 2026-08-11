@@ -1,9 +1,13 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { categories, games } from '@/mock/games'
 import { Icon } from '@/components/Icon'
 import { useIsMobile } from '@/hooks'
 import './index.css'
+
+const RECENT_KEY = 'casino-recent-searches'
+const RECENT_MAX = 10
+const DEFAULT_RECENT = ['麻将胡了', '埃及秘宝']
 
 const coverStyles: Record<string, string> = {
   mahjong:
@@ -38,28 +42,191 @@ const categoryLabelKeys: Record<string, string> = {
   lottery: 'home.lottery',
 }
 
+function loadRecent(): string[] {
+  try {
+    const raw = localStorage.getItem(RECENT_KEY)
+    if (!raw) return DEFAULT_RECENT
+    const parsed = JSON.parse(raw) as unknown
+    if (!Array.isArray(parsed)) return DEFAULT_RECENT
+    return parsed.filter((item): item is string => typeof item === 'string')
+  } catch {
+    return DEFAULT_RECENT
+  }
+}
+
+function saveRecent(items: string[]) {
+  localStorage.setItem(RECENT_KEY, JSON.stringify(items))
+}
+
 export function GameSection() {
   const { t } = useTranslation()
   const isMobile = useIsMobile()
   const [activeCategory, setActiveCategory] = useState('lobby')
   const [query, setQuery] = useState('')
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [recent, setRecent] = useState<string[]>(loadRecent)
+  const inputRef = useRef<HTMLInputElement>(null)
 
-  const filtered = games.filter((g) =>
-    t(`games.${g.id}`).toLowerCase().includes(query.trim().toLowerCase()),
-  )
+  const keyword = query.trim().toLowerCase()
+  const popular = games.map((game) => t(`games.${game.id}`))
+  const results = keyword
+    ? games.filter((game) => t(`games.${game.id}`).toLowerCase().includes(keyword))
+    : []
+
+  useEffect(() => {
+    if (!searchOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeSearch()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [searchOpen])
+
+  const updateRecent = (next: string[]) => {
+    setRecent(next)
+    saveRecent(next)
+  }
+
+  const pushRecent = (value: string) => {
+    const next = value.trim()
+    if (!next) return
+    updateRecent([next, ...recent.filter((item) => item !== next)].slice(0, RECENT_MAX))
+  }
+
+  const closeSearch = () => {
+    setSearchOpen(false)
+    setQuery('')
+    inputRef.current?.blur()
+  }
+
+  const clearInput = () => {
+    if (query) {
+      setQuery('')
+      inputRef.current?.focus()
+      return
+    }
+    closeSearch()
+  }
+
+  const applyKeyword = (value: string) => {
+    setQuery(value)
+    pushRecent(value)
+    inputRef.current?.focus()
+  }
 
   return (
-    <section className="game-section">
+    <section className={`game-section ${searchOpen ? 'is-searching' : ''}`}>
       <div className="search-bar">
         <Icon name="search" size={18} />
         <input
+          ref={inputRef}
           type="search"
           placeholder={t('home.searchGames')}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onFocus={() => setSearchOpen(true)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') pushRecent(query)
+          }}
           aria-label={t('home.searchGames')}
         />
+        {searchOpen ? (
+          <button
+            type="button"
+            className="search-bar__clear"
+            aria-label={t('common.close')}
+            onClick={clearInput}
+          >
+            <Icon name="close" size={14} />
+          </button>
+        ) : null}
       </div>
+
+      {searchOpen ? (
+        <div className="game-search-panel">
+          {keyword ? (
+            results.length > 0 ? (
+              <div className="game-search-results">
+                {results.map((game) => (
+                  <article key={game.id} className="game-card">
+                    <div
+                      className="game-cover"
+                      style={{ background: coverStyles[game.cover] }}
+                    >
+                      {game.provider ? (
+                        <span className="provider-badge">{game.provider}</span>
+                      ) : null}
+                      <div className="cover-deco" data-cover={game.cover} />
+                      <div className="player-count">
+                        <Icon name="user" size={12} />
+                        {game.players}
+                      </div>
+                    </div>
+                    <h3 className="game-name">{t(`games.${game.id}`)}</h3>
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <p className="game-search-empty">{t('home.emptySearch')}</p>
+            )
+          ) : (
+            <>
+              {recent.length > 0 ? (
+                <div className="game-search-block">
+                  <div className="game-search-head">
+                    <h3>{t('home.recentSearches')}</h3>
+                    <button type="button" onClick={() => updateRecent([])}>
+                      {t('home.clearSearches', { count: recent.length })}
+                    </button>
+                  </div>
+                  <ul className="game-search-tags">
+                    {recent.map((item) => (
+                      <li key={item}>
+                        <button
+                          type="button"
+                          className="game-search-tag"
+                          onClick={() => applyKeyword(item)}
+                        >
+                          {item}
+                        </button>
+                        <button
+                          type="button"
+                          className="game-search-tag__remove"
+                          aria-label={t('common.close')}
+                          onClick={() =>
+                            updateRecent(recent.filter((entry) => entry !== item))
+                          }
+                        >
+                          <Icon name="close" size={12} />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+
+              <div className="game-search-block">
+                <div className="game-search-head">
+                  <h3>{t('home.popularSearches')}</h3>
+                </div>
+                <ul className="game-search-tags">
+                  {popular.map((item) => (
+                    <li key={item}>
+                      <button
+                        type="button"
+                        className="game-search-tag"
+                        onClick={() => applyKeyword(item)}
+                      >
+                        {item}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </>
+          )}
+        </div>
+      ) : null}
 
       <div className="categories" role="tablist" aria-label={t('home.gameCategories')}>
         {categories.map((cat) => (
@@ -84,7 +251,7 @@ export function GameSection() {
         </h2>
         <div className="hot-controls">
           <button type="button" className="view-all">
-            {t('common.all')} {filtered.length}
+            {t('common.all')} {games.length}
           </button>
           <button type="button" className="nav-arrow" aria-label={t('common.prev')}>
             <Icon name="chevron-left" size={16} />
@@ -96,7 +263,7 @@ export function GameSection() {
       </div>
 
       <div className={`game-grid ${isMobile ? 'game-grid--mobile' : ''}`}>
-        {filtered.map((game, index) => (
+        {games.map((game, index) => (
           <article
             key={game.id}
             className={`game-card ${isMobile && index < 2 ? 'game-card--large' : ''}`}

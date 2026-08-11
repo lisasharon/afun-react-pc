@@ -3,6 +3,8 @@ const home = {
   searchGames: '搜索游戏',
   recentSearches: '近期搜索',
   clearSearches: '清除搜索({{count}})',
+  popularSearches: '热门搜索',
+  emptySearch: '暂无相关游戏',
   gameCategories: '游戏分类',
   hotGames: '热门游戏',
   lobby: '大厅',

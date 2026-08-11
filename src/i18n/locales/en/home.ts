@@ -3,6 +3,8 @@ const home = {
   searchGames: 'Search games',
   recentSearches: 'Recent searches',
   clearSearches: 'Clear ({{count}})',
+  popularSearches: 'Popular searches',
+  emptySearch: 'No games found',
   gameCategories: 'Game categories',
   hotGames: 'Hot Games',
   lobby: 'Lobby',
