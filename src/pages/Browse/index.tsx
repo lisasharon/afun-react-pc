@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { NavLink } from 'react-router-dom'
+import { Navigate, NavLink } from 'react-router-dom'
 import { Icon } from '@/components/Icon'
+import { useIsMobile } from '@/hooks'
 import { formatDateTime } from '@/utils/format'
 import { copyText } from '@/utils/copy'
 import type { AppLang } from '@/i18n'
@@ -61,6 +62,7 @@ function saveRecent(items: string[]) {
 
 export function Browse() {
   const { t, i18n } = useTranslation()
+  const isMobile = useIsMobile()
   const [mode, setMode] = useState<'casino' | 'sports'>('casino')
   const [query, setQuery] = useState('')
   const [searchActive, setSearchActive] = useState(false)
@@ -142,6 +144,11 @@ export function Browse() {
     const value = query.trim()
     if (!value) return
     pushRecent(value)
+  }
+
+  /* 浏览页是侧栏的移动端替代，桌面直接回娱乐城 */
+  if (!isMobile) {
+    return <Navigate to="/" replace />
   }
 
   return (

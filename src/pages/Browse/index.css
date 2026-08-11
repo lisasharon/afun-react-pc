@@ -413,12 +413,3 @@
 .browse-time svg {
   color: var(--text-dim);
 }
-
-@media (min-width: 961px) {
-  .browse-page {
-    width: 100%;
-    max-width: 180px;
-    /* 父级 .main-layout__page-body 是纵向 flex，默认 stretch 会把宽度拉满，盖掉 max-width */
-    align-self: flex-start;
-  }
-}
