@@ -50,6 +50,14 @@ export function Icon({ name, size = 20, className }: IconProps) {
           <polygon points="12 3 14.5 9.5 21.5 9.5 16 14 18 21 12 17 6 21 8 14 2.5 9.5 9.5 9.5" />
         </svg>
       )
+    case 'trophy':
+      return (
+        <svg {...props}>
+          <path d="M7 5h10v4a5 5 0 0 1-10 0V5z" />
+          <path d="M7 7H4.5A2.5 2.5 0 0 0 7 9.5M17 7h2.5A2.5 2.5 0 0 1 17 9.5" />
+          <path d="M12 14v3M9 20h6" />
+        </svg>
+      )
     case 'clock':
       return (
         <svg {...props}>
@@ -194,6 +202,59 @@ export function Icon({ name, size = 20, className }: IconProps) {
           <circle cx="12" cy="12" r="9" />
           <path d="M12 3c2.5 2.2 4 5.4 4 9s-1.5 6.8-4 9c-2.5-2.2-4-5.4-4-9s1.5-6.8 4-9z" />
           <path d="M3.5 9.5h17M3.5 14.5h17" />
+        </svg>
+      )
+    case 'football':
+      return (
+        <svg {...props}>
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 3c2.5 2.2 4 5.4 4 9s-1.5 6.8-4 9c-2.5-2.2-4-5.4-4-9s1.5-6.8 4-9z" />
+          <path d="M3.5 9.5h17M3.5 14.5h17" />
+        </svg>
+      )
+    case 'basketball':
+      return (
+        <svg {...props}>
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 3v18M3 12h18" />
+          <path d="M5 5c4 3 6 7 6 14M19 5c-4 3-6 7-6 14" />
+        </svg>
+      )
+    case 'tennis':
+      return (
+        <svg {...props}>
+          <circle cx="12" cy="12" r="9" />
+          <path d="M6 5c4 3 8 7 13 8M5 6c3 4 7 8 8 13" />
+        </svg>
+      )
+    case 'baseball':
+      return (
+        <svg {...props}>
+          <circle cx="12" cy="12" r="9" />
+          <path d="M7 4.5c3 3 4 8 3.5 15M17 4.5c-3 3-4 8-3.5 15" />
+        </svg>
+      )
+    case 'darts':
+      return (
+        <svg {...props}>
+          <circle cx="12" cy="13" r="7" />
+          <circle cx="12" cy="13" r="3.5" />
+          <path d="M12 3v3M10 3h4" />
+        </svg>
+      )
+    case 'handball':
+      return (
+        <svg {...props}>
+          <circle cx="12" cy="12" r="9" />
+          <path d="M8 5c3 2 5 6 5 14M16 6c-2 3-3 7-2 13" />
+        </svg>
+      )
+    case 'hockey':
+      return (
+        <svg {...props}>
+          <path d="M5 17c2-6 5-10 7-12 2 2 5 6 7 12" />
+          <path d="M4 18h16" />
+          <circle cx="12" cy="8" r="1.5" fill="currentColor" stroke="none" />
         </svg>
       )
     case 'live':

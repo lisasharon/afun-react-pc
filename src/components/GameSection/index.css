@@ -5,10 +5,6 @@
   position: relative;
 }
 
-.game-section.is-searching {
-  z-index: 20;
-}
-
 .search-bar {
   display: flex;
   align-items: center;
@@ -61,25 +57,40 @@
   color: var(--text);
 }
 
-.game-section.is-searching .search-bar {
-  position: relative;
-  z-index: 22;
+.game-search-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.game-search-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(420px, 100%);
+  height: 33vh;
+  padding: 16px;
+  border-radius: 12px;
+  background: #1b252d;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+}
+
+.game-search-dialog .search-bar {
+  flex-shrink: 0;
   border-color: var(--green);
-  box-shadow: 0 0 0 1px var(--green);
   color: var(--green);
 }
 
-.game-search-panel {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: calc(46px + 10px);
-  z-index: 21;
-  min-height: calc(100dvh - 220px);
-  padding: 8px 4px 96px;
-  border-radius: 12px;
-  background: rgba(14, 20, 25, 0.96);
-  backdrop-filter: blur(10px);
+.game-search-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .game-search-block + .game-search-block {
@@ -515,10 +526,9 @@
     border-radius: 10px;
   }
 
-  .game-search-panel {
-    top: calc(44px + 8px);
-    min-height: calc(100dvh - 180px);
-    padding: 4px 0 calc(80px + var(--safe-bottom));
+  .game-search-dialog {
+    width: 100%;
+    height: 43vh;
   }
 
   .game-search-results {

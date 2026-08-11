@@ -17,6 +17,7 @@ const sidebar = {
   liveBetting: 'In-Play',
   myBets: 'My Bets',
   rebate: 'Live Rebate',
+  topSports: 'Top Sports',
   sportEvents: 'Sports',
   oddsFormat: 'Odds: Decimal',
   langZh: '简体中文',

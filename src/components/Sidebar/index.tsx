@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { Icon } from '@/components/Icon'
 import { useIsMobile } from '@/hooks'
 import { formatDateTime } from '@/utils/format'
@@ -59,6 +59,7 @@ const languages: { code: AppLang; labelKey: 'sidebar.langZh' | 'sidebar.langEn' 
 export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
   const { t, i18n } = useTranslation()
   const location = useLocation()
+  const navigate = useNavigate()
   const isMobile = useIsMobile()
   const showFullMenu = expanded || isMobile
   const [now, setNow] = useState(() => new Date())
@@ -75,8 +76,13 @@ export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
   }, [])
 
   useEffect(() => {
-    if (location.pathname.startsWith('/sports')) setMode('sports')
+    setMode(location.pathname.startsWith('/sports') ? 'sports' : 'casino')
   }, [location.pathname])
+
+  const switchMode = (next: SidebarMode) => {
+    setMode(next)
+    navigate(next === 'sports' ? '/sports' : '/')
+  }
 
   useEffect(() => {
     if (!langOpen) return
@@ -148,6 +154,20 @@ export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
             ) : null}
           </button>
         ))}
+      </div>
+
+      <p className="sidebar-group-label">{t('sidebar.topSports')}</p>
+      <div className="sidebar-menu-card">
+        <button type="button" className="sidebar-link sidebar-link--chevron">
+          <Icon name="football" size={18} />
+          <span>{t('sports.types.football')}</span>
+          <Icon name="chevron-right" size={16} />
+        </button>
+        <button type="button" className="sidebar-link sidebar-link--chevron">
+          <Icon name="basketball" size={18} />
+          <span>{t('sports.types.basketball')}</span>
+          <Icon name="chevron-right" size={16} />
+        </button>
       </div>
 
       <div className="sidebar-menu-card">
@@ -278,14 +298,14 @@ export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
               <button
                 type="button"
                 className={mode === 'casino' ? 'active' : ''}
-                onClick={() => setMode('casino')}
+                onClick={() => switchMode('casino')}
               >
                 {t('sidebar.casino')}
               </button>
               <button
                 type="button"
                 className={mode === 'sports' ? 'active' : ''}
-                onClick={() => setMode('sports')}
+                onClick={() => switchMode('sports')}
               >
                 {t('sidebar.sports')}
               </button>

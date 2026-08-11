@@ -17,6 +17,7 @@ const sidebar = {
   liveBetting: '滚球盘',
   myBets: '我的投注',
   rebate: '实时返水',
+  topSports: '顶级体育项目',
   sportEvents: '体育项目',
   oddsFormat: '赔率: 小数式',
   langZh: '简体中文',

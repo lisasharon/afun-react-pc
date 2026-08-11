@@ -14,6 +14,7 @@ import profile from './profile'
 import promo from './promo'
 import offers from './offers'
 import footer from './footer'
+import sports from './sports'
 
 const en = {
   common,
@@ -32,6 +33,7 @@ const en = {
   promo,
   offers,
   footer,
+  sports,
 } as const
 
 export default en

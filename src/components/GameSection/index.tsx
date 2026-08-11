@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { categories, games } from '@/mock/games'
 import { Icon } from '@/components/Icon'
@@ -75,6 +76,7 @@ export function GameSection() {
 
   useEffect(() => {
     if (!searchOpen) return
+    inputRef.current?.focus()
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closeSearch()
     }
@@ -115,118 +117,139 @@ export function GameSection() {
   }
 
   return (
-    <section className={`game-section ${searchOpen ? 'is-searching' : ''}`}>
+    <section className="game-section">
       <div className="search-bar">
         <Icon name="search" size={18} />
         <input
-          ref={inputRef}
           type="search"
           placeholder={t('home.searchGames')}
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          readOnly
           onFocus={() => setSearchOpen(true)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') pushRecent(query)
-          }}
           aria-label={t('home.searchGames')}
         />
-        {searchOpen ? (
-          <button
-            type="button"
-            className="search-bar__clear"
-            aria-label={t('common.close')}
-            onClick={clearInput}
-          >
-            <Icon name="close" size={14} />
-          </button>
-        ) : null}
       </div>
 
-      {searchOpen ? (
-        <div className="game-search-panel">
-          {keyword ? (
-            results.length > 0 ? (
-              <div className="game-search-results">
-                {results.map((game) => (
-                  <article key={game.id} className="game-card">
-                    <div
-                      className="game-cover"
-                      style={{ background: coverStyles[game.cover] }}
-                    >
-                      {game.provider ? (
-                        <span className="provider-badge">{game.provider}</span>
-                      ) : null}
-                      <div className="cover-deco" data-cover={game.cover} />
-                      <div className="player-count">
-                        <Icon name="user" size={12} />
-                        {game.players}
-                      </div>
+      {searchOpen
+        ? createPortal(
+            <div className="game-search-mask" onClick={closeSearch}>
+              <div
+                className="game-search-dialog"
+                role="dialog"
+                aria-modal="true"
+                aria-label={t('home.searchGames')}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="search-bar">
+                  <Icon name="search" size={18} />
+                  <input
+                    ref={inputRef}
+                    type="search"
+                    placeholder={t('home.searchGames')}
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') pushRecent(query)
+                    }}
+                    aria-label={t('home.searchGames')}
+                  />
+                  <button
+                    type="button"
+                    className="search-bar__clear"
+                    aria-label={t('common.close')}
+                    onClick={clearInput}
+                  >
+                    <Icon name="close" size={14} />
+                  </button>
+                </div>
+                <div className="game-search-body">
+                {keyword ? (
+                  results.length > 0 ? (
+                    <div className="game-search-results">
+                      {results.map((game) => (
+                        <article key={game.id} className="game-card">
+                          <div
+                            className="game-cover"
+                            style={{ background: coverStyles[game.cover] }}
+                          >
+                            {game.provider ? (
+                              <span className="provider-badge">{game.provider}</span>
+                            ) : null}
+                            <div className="cover-deco" data-cover={game.cover} />
+                            <div className="player-count">
+                              <Icon name="user" size={12} />
+                              {game.players}
+                            </div>
+                          </div>
+                          <h3 className="game-name">{t(`games.${game.id}`)}</h3>
+                        </article>
+                      ))}
                     </div>
-                    <h3 className="game-name">{t(`games.${game.id}`)}</h3>
-                  </article>
-                ))}
-              </div>
-            ) : (
-              <p className="game-search-empty">{t('home.emptySearch')}</p>
-            )
-          ) : (
-            <>
-              {recent.length > 0 ? (
-                <div className="game-search-block">
-                  <div className="game-search-head">
-                    <h3>{t('home.recentSearches')}</h3>
-                    <button type="button" onClick={() => updateRecent([])}>
-                      {t('home.clearSearches', { count: recent.length })}
-                    </button>
-                  </div>
-                  <ul className="game-search-tags">
-                    {recent.map((item) => (
-                      <li key={item}>
-                        <button
-                          type="button"
-                          className="game-search-tag"
-                          onClick={() => applyKeyword(item)}
-                        >
-                          {item}
-                        </button>
-                        <button
-                          type="button"
-                          className="game-search-tag__remove"
-                          aria-label={t('common.close')}
-                          onClick={() =>
-                            updateRecent(recent.filter((entry) => entry !== item))
-                          }
-                        >
-                          <Icon name="close" size={12} />
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
+                  ) : (
+                    <p className="game-search-empty">{t('home.emptySearch')}</p>
+                  )
+                ) : (
+                  <>
+                    {recent.length > 0 ? (
+                      <div className="game-search-block">
+                        <div className="game-search-head">
+                          <h3>{t('home.recentSearches')}</h3>
+                          <button type="button" onClick={() => updateRecent([])}>
+                            {t('home.clearSearches', { count: recent.length })}
+                          </button>
+                        </div>
+                        <ul className="game-search-tags">
+                          {recent.map((item) => (
+                            <li key={item}>
+                              <button
+                                type="button"
+                                className="game-search-tag"
+                                onClick={() => applyKeyword(item)}
+                              >
+                                {item}
+                              </button>
+                              <button
+                                type="button"
+                                className="game-search-tag__remove"
+                                aria-label={t('common.close')}
+                                onClick={() =>
+                                  updateRecent(recent.filter((entry) => entry !== item))
+                                }
+                              >
+                                <Icon name="close" size={12} />
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
 
-              <div className="game-search-block">
-                <div className="game-search-head">
-                  <h3>{t('home.popularSearches')}</h3>
+                    <div className="game-search-block">
+                      <div className="game-search-head">
+                        <h3>{t('home.popularSearches')}</h3>
+                      </div>
+                      <ul className="game-search-tags">
+                        {popular.map((item) => (
+                          <li key={item}>
+                            <button
+                              type="button"
+                              className="game-search-tag"
+                              onClick={() => applyKeyword(item)}
+                            >
+                              {item}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </>
+                )}
                 </div>
-                <ul className="game-search-tags">
-                  {popular.map((item) => (
-                    <li key={item}>
-                      <button
-                        type="button"
-                        className="game-search-tag"
-                        onClick={() => applyKeyword(item)}
-                      >
-                        {item}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
               </div>
-            </>
-          )}
-        </div>
-      ) : null}
+            </div>,
+            document.body,
+          )
+        : null}
 
       <div className="categories" role="tablist" aria-label={t('home.gameCategories')}>
         {categories.map((cat) => (
