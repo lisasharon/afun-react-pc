@@ -74,12 +74,14 @@ export function MainLayout() {
 
   const panelOpen = messagesOpen || betSlipOpen
   const isProfileRoute = location.pathname.startsWith('/profile')
-  const hideFooter =
-    isMobile &&
-    (isProfileRoute ||
-      location.pathname.startsWith('/browse') ||
-      location.pathname.startsWith('/sports') ||
-      location.pathname.startsWith('/promotion'))
+  const isBrowseRoute = location.pathname.startsWith('/browse')
+  const isSportsRoute = location.pathname.startsWith('/sports')
+  const isPromoRoute = location.pathname.startsWith('/promotion')
+  const showHeader = !(isMobile && isProfileRoute)
+  const showFooter =
+    !isMobile || (!isProfileRoute && !isBrowseRoute && !isSportsRoute && !isPromoRoute)
+  const showSupport = isMobile && !isBrowseRoute && !isProfileRoute
+  const authOpen = authMode !== null
 
   const layoutClass = [
     'main-layout',
@@ -87,22 +89,22 @@ export function MainLayout() {
     sidebarExpanded ? 'sidebar-expanded' : 'sidebar-collapsed',
     panelOpen ? 'messages-open' : '',
     panelOpen ? 'drawer-open' : '',
-    location.pathname.startsWith('/sports') ? 'is-sports' : '',
+    isSportsRoute ? 'is-sports' : '',
   ]
     .filter(Boolean)
     .join(' ')
 
   return (
     <div className={layoutClass}>
-      {!isMobile ? (
+      {!isMobile && (
         <Sidebar
           expanded={sidebarExpanded}
           onToggle={toggleSidebar}
           onClose={closeSidebar}
         />
-      ) : null}
+      )}
       <div className="main-layout__content">
-        {!(isMobile && isProfileRoute) ? (
+        {showHeader && (
           <Header
             onOpenMessages={openMessages}
             onOpenBetSlip={openBetSlip}
@@ -113,7 +115,7 @@ export function MainLayout() {
             isMobile={isMobile}
             onOpenAuth={setAuthMode}
           />
-        ) : null}
+        )}
         <main
           className={`main-layout__page ${isMobile && isProfileRoute ? 'main-layout__page--flush' : ''}`}
           ref={pageRef}
@@ -121,11 +123,10 @@ export function MainLayout() {
           <div className="main-layout__page-body">
             <Outlet />
           </div>
-          {/* 桌面全站 Footer；移动端仅娱乐城显示，浏览/体育/优惠/个人中心不显示 */}
-          {!hideFooter ? <Footer /> : null}
+          {showFooter && <Footer />}
         </main>
       </div>
-      {!isMobile ? (
+      {!isMobile && (
         <>
           <MessageCenter
             open={messagesOpen}
@@ -143,14 +144,12 @@ export function MainLayout() {
             onClear={clearBets}
           />
         </>
-      ) : null}
-      {isMobile && location.pathname !== '/browse' && !isProfileRoute ? (
-        <FloatingSupport />
-      ) : null}
-      {isMobile ? <BottomNav onOpenAuth={setAuthMode} /> : null}
+      )}
+      {showSupport && <FloatingSupport />}
+      {isMobile && <BottomNav onOpenAuth={setAuthMode} />}
       <AuthModal
-        open={authMode !== null}
-        mode={authMode ?? 'login'}
+        open={authOpen}
+        mode={authMode || 'login'}
         onClose={() => setAuthMode(null)}
         onSwitchMode={setAuthMode}
       />
