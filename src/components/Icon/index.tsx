@@ -246,6 +246,22 @@ export function Icon({ name, size = 20, className }: IconProps) {
           <circle cx="8.5" cy="13.5" r="1" fill="currentColor" stroke="none" />
         </svg>
       )
+    case 'eye':
+      return (
+        <svg {...props}>
+          <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" />
+          <circle cx="12" cy="12" r="3" />
+        </svg>
+      )
+    case 'eye-off':
+      return (
+        <svg {...props}>
+          <path d="M3 3l18 18" />
+          <path d="M10.6 10.6A3 3 0 0 0 12 15a3 3 0 0 0 2.4-4.4" />
+          <path d="M9.9 5.1A11 11 0 0 1 12 5c6 0 10 7 10 7a18 18 0 0 1-3.2 3.9" />
+          <path d="M6.1 6.1C3.8 7.8 2 12 2 12s4 7 10 7a10 10 0 0 0 4.1-.9" />
+        </svg>
+      )
     case 'close':
       return (
         <svg {...props}>

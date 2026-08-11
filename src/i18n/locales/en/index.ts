@@ -1,5 +1,6 @@
 import common from './common'
 import header from './header'
+import auth from './auth'
 import sidebar from './sidebar'
 import home from './home'
 import nav from './nav'
@@ -17,6 +18,7 @@ import footer from './footer'
 const en = {
   common,
   header,
+  auth,
   sidebar,
   home,
   nav,

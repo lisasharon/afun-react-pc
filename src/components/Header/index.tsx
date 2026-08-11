@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { AuthModal, type AuthMode } from '@/components/AuthModal'
 import { Icon } from '@/components/Icon'
 import { AUTH } from '@/mock/auth'
 import type { MessageType } from '@/types/message'
@@ -22,15 +24,19 @@ function Badge({ count }: { count: number }) {
   )
 }
 
-function GuestActions() {
+function GuestActions({ onOpen }: { onOpen: (mode: AuthMode) => void }) {
   const { t } = useTranslation()
 
   return (
     <div className="header-auth">
-      <button type="button" className="login-btn">
+      <button type="button" className="login-btn" onClick={() => onOpen('login')}>
         {t('header.login')}
       </button>
-      <button type="button" className="register-btn">
+      <button
+        type="button"
+        className="register-btn"
+        onClick={() => onOpen('register')}
+      >
         {t('header.register')}
       </button>
     </div>
@@ -48,9 +54,20 @@ export function Header({
 }: HeaderProps) {
   const { t } = useTranslation()
   const loggedIn = AUTH.isLoggedIn
+  const [authMode, setAuthMode] = useState<AuthMode | null>(null)
+
+  const authModal = (
+    <AuthModal
+      open={authMode !== null}
+      mode={authMode ?? 'login'}
+      onClose={() => setAuthMode(null)}
+      onSwitchMode={setAuthMode}
+    />
+  )
 
   if (isMobile) {
     return (
+      <>
       <header className="header header--mobile">
         <a href="/" className="logo" aria-label="betup">
           <span className="logo-bet">bet</span>
@@ -86,7 +103,7 @@ export function Header({
           </div>
         ) : (
           <>
-            <GuestActions />
+            <GuestActions onOpen={setAuthMode} />
             <button
               type="button"
               className="deposit-promo"
@@ -100,10 +117,13 @@ export function Header({
           </>
         )}
       </header>
+      {authModal}
+      </>
     )
   }
 
   return (
+    <>
     <header className="header">
       <div className="header-left">
         <a href="/" className="logo" aria-label="betup">
@@ -164,8 +184,10 @@ export function Header({
           </div>
         </div>
       ) : (
-        <GuestActions />
+        <GuestActions onOpen={setAuthMode} />
       )}
     </header>
+    {authModal}
+    </>
   )
 }
