@@ -128,24 +128,22 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
           {showFooter && <Footer />}
         </main>
       </div>
+      <MessageCenter
+        open={messagesOpen}
+        onClose={closeMessages}
+        messages={messages}
+        activeTab={messageTab}
+        onTabChange={setMessageTab}
+        onMarkRead={markMessageRead}
+      />
       {!isMobile && (
-        <>
-          <MessageCenter
-            open={messagesOpen}
-            onClose={closeMessages}
-            messages={messages}
-            activeTab={messageTab}
-            onTabChange={setMessageTab}
-            onMarkRead={markMessageRead}
-          />
-          <BetSlip
-            open={betSlipOpen}
-            onClose={closeBetSlip}
-            items={betItems}
-            onRemove={removeBet}
-            onClear={clearBets}
-          />
-        </>
+        <BetSlip
+          open={betSlipOpen}
+          onClose={closeBetSlip}
+          items={betItems}
+          onRemove={removeBet}
+          onClear={clearBets}
+        />
       )}
       {showSupport && <FloatingSupport />}
       {isMobile && <BottomNav onOpenAuth={setAuthMode} />}

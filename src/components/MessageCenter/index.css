@@ -355,16 +355,32 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 960px) {
   .message-center {
     width: 100%;
     max-width: 100%;
+    border-left: none;
+    z-index: 90;
+  }
+
+  .message-backdrop {
+    z-index: 88;
+  }
+
+  .message-header {
+    height: calc(52px + var(--safe-top));
+    padding-top: var(--safe-top);
+  }
+
+  .message-body {
+    padding-bottom: calc(12px + var(--safe-bottom));
   }
 
   .msg-detail-root {
     padding: 12px;
     padding-bottom: calc(12px + var(--safe-bottom));
-    align-items: flex-end;
+    align-items: center;
+    z-index: 95;
   }
 
   .msg-detail-dialog {
