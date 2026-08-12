@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { MainLayout } from '@/layouts/MainLayout'
 import { Browse } from '@/pages/Browse'
-import { CasinoHome } from '@/pages/CasinoHome'
+import { Home } from '@/pages/Home'
 import {
   Affiliate,
   BetHistory,
@@ -27,9 +27,9 @@ export function AppRouter() {
   return (
     <Routes>
       <Route element={<MainLayout />}>
-        <Route index element={<CasinoHome />} />
+        <Route index element={<Home />} />
         <Route path="browse" element={<Browse />} />
-        <Route path="casino" element={<CasinoHome />} />
+        <Route path="casino" element={<Home />} />
         <Route path="sports" element={<Sports />} />
         <Route path="profile" element={<PersonalCenterLayout />}>
           <Route index element={<ProfileHome />} />
