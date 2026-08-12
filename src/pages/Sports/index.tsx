@@ -1,11 +1,16 @@
-import { useEffect, useRef, useState } from 'react'
-import { createPortal } from 'react-dom'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import dayjs from 'dayjs'
 import { Icon } from '@/components/Icon'
+import { SearchModal } from '@/components/SearchModal'
 import { useIsMobile } from '@/hooks'
 import { popularLeagues, sportsProvider, sportTypes } from '@/mock/sports'
 import type { OddsCell, SportsTab, SportTypeId } from '@/types/sports'
+import {
+  loadRecentSearches,
+  pushRecentSearch,
+  saveRecentSearches,
+} from '@/utils/recentSearch'
 import './index.css'
 
 const RECENT_KEY = 'sports-recent-searches'
@@ -27,18 +32,6 @@ const marketFilters = [
 ] as const
 
 type MarketFilter = (typeof marketFilters)[number]['id']
-
-function loadRecent(): string[] {
-  try {
-    const raw = localStorage.getItem(RECENT_KEY)
-    if (!raw) return DEFAULT_RECENT
-    const parsed = JSON.parse(raw) as unknown
-    if (!Array.isArray(parsed)) return DEFAULT_RECENT
-    return parsed.filter((item): item is string => typeof item === 'string')
-  } catch {
-    return DEFAULT_RECENT
-  }
-}
 
 function OddsButton({ cell, prefix }: { cell: OddsCell; prefix?: string }) {
   return (
@@ -63,8 +56,9 @@ export function Sports() {
   const [saved, setSaved] = useState<string[]>([])
   const [query, setQuery] = useState('')
   const [searchOpen, setSearchOpen] = useState(false)
-  const [recent, setRecent] = useState<string[]>(loadRecent)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const [recent, setRecent] = useState(() =>
+    loadRecentSearches(RECENT_KEY, DEFAULT_RECENT),
+  )
 
   const keyword = query.trim().toLowerCase()
   const popularKeywords = [
@@ -77,49 +71,24 @@ export function Sports() {
     ...league.matches.flatMap((match) => [t(match.homeKey), t(match.awayKey)]),
   ])
   const searchHits = keyword
-    ? [...new Set(eventNames)].filter((name) => name.toLowerCase().includes(keyword))
+    ? [...new Set(eventNames)].filter((name) =>
+        name.toLowerCase().includes(keyword),
+      )
     : []
-
-  useEffect(() => {
-    if (!searchOpen) return
-    inputRef.current?.focus()
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeSearch()
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [searchOpen])
 
   const updateRecent = (next: string[]) => {
     setRecent(next)
-    localStorage.setItem(RECENT_KEY, JSON.stringify(next))
-  }
-
-  const pushRecent = (value: string) => {
-    const next = value.trim()
-    if (!next) return
-    updateRecent([next, ...recent.filter((item) => item !== next)].slice(0, 10))
+    saveRecentSearches(RECENT_KEY, next)
   }
 
   const closeSearch = () => {
     setSearchOpen(false)
     setQuery('')
-    inputRef.current?.blur()
-  }
-
-  const clearInput = () => {
-    if (query) {
-      setQuery('')
-      inputRef.current?.focus()
-      return
-    }
-    closeSearch()
   }
 
   const applyKeyword = (value: string) => {
     setQuery(value)
-    pushRecent(value)
-    inputRef.current?.focus()
+    setRecent(pushRecentSearch(RECENT_KEY, recent, value))
   }
 
   const toggleSaved = (id: string) => {
@@ -146,10 +115,7 @@ export function Sports() {
         </div>
       </article>
 
-      <div
-        className="sports-search"
-        onClick={() => setSearchOpen(true)}
-      >
+      <div className="sports-search" onClick={() => setSearchOpen(true)}>
         <Icon name="search" size={18} />
         <input
           type="search"
@@ -160,118 +126,44 @@ export function Sports() {
         />
       </div>
 
-      {searchOpen
-        ? createPortal(
-            <div className="sports-search-mask" onClick={closeSearch}>
-              <div
-                className="sports-search-dialog"
-                role="dialog"
-                aria-modal="true"
-                aria-label={t('sports.searchEvents')}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="sports-search">
-                  <Icon name="search" size={18} />
-                  <input
-                    ref={inputRef}
-                    type="search"
-                    placeholder={t('sports.searchEvents')}
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') pushRecent(query)
-                    }}
-                    aria-label={t('sports.searchEvents')}
-                  />
-                  <button
-                    type="button"
-                    className="sports-search__clear"
-                    aria-label={t('common.close')}
-                    onClick={clearInput}
-                  >
-                    <Icon name="close" size={14} />
-                  </button>
-                </div>
-                <div className="sports-search-body">
-                  {keyword ? (
-                    searchHits.length > 0 ? (
-                      <ul className="sports-search-tags">
-                        {searchHits.map((item) => (
-                          <li key={item}>
-                            <button
-                              type="button"
-                              className="sports-search-tag"
-                              onClick={() => applyKeyword(item)}
-                            >
-                              {item}
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p className="sports-empty">{t('sports.emptySearch')}</p>
-                    )
-                  ) : (
-                    <>
-                      {recent.length > 0 ? (
-                        <div className="sports-search-block">
-                          <div className="sports-search-head">
-                            <h3>{t('sports.recentSearches')}</h3>
-                            <button type="button" onClick={() => updateRecent([])}>
-                              {t('sports.clearSearches', { count: recent.length })}
-                            </button>
-                          </div>
-                          <ul className="sports-search-tags">
-                            {recent.map((item) => (
-                              <li key={item}>
-                                <button
-                                  type="button"
-                                  className="sports-search-tag"
-                                  onClick={() => applyKeyword(item)}
-                                >
-                                  {item}
-                                </button>
-                                <button
-                                  type="button"
-                                  className="sports-search-tag__remove"
-                                  aria-label={t('common.close')}
-                                  onClick={() =>
-                                    updateRecent(recent.filter((entry) => entry !== item))
-                                  }
-                                >
-                                  <Icon name="close" size={12} />
-                                </button>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ) : null}
-                      <div className="sports-search-block">
-                        <div className="sports-search-head">
-                          <h3>{t('sports.popularSearches')}</h3>
-                        </div>
-                        <ul className="sports-search-tags">
-                          {popularKeywords.map((item) => (
-                            <li key={item}>
-                              <button
-                                type="button"
-                                className="sports-search-tag"
-                                onClick={() => applyKeyword(item)}
-                              >
-                                {item}
-                              </button>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>,
-            document.body,
-          )
-        : null}
+      <SearchModal
+        open={searchOpen}
+        onClose={closeSearch}
+        query={query}
+        onQueryChange={setQuery}
+        placeholder={t('sports.searchEvents')}
+        recent={recent}
+        popular={popularKeywords}
+        recentTitle={t('sports.recentSearches')}
+        popularTitle={t('sports.popularSearches')}
+        clearTitle={t('sports.clearSearches', { count: recent.length })}
+        emptyText={t('sports.emptySearch')}
+        onClearRecent={() => updateRecent([])}
+        onRemoveRecent={(item) =>
+          updateRecent(recent.filter((entry) => entry !== item))
+        }
+        onSelectKeyword={applyKeyword}
+        onSubmit={() => setRecent(pushRecentSearch(RECENT_KEY, recent, query))}
+        results={
+          keyword ? (
+            searchHits.length > 0 ? (
+              <ul className="search-modal__tags">
+                {searchHits.map((item) => (
+                  <li key={item}>
+                    <button
+                      type="button"
+                      className="search-modal__tag"
+                      onClick={() => applyKeyword(item)}
+                    >
+                      {item}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : null
+          ) : undefined
+        }
+      />
 
       <button type="button" className="sports-provider">
         <span>
