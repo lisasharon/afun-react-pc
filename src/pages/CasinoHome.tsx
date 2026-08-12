@@ -1,11 +1,11 @@
 import { BannerCarousel } from '@/components/BannerCarousel'
-import { GameSection } from '@/components/GameSection'
+import { Game } from '@/pages/Game'
 
 export function CasinoHome() {
   return (
     <>
       <BannerCarousel />
-      <GameSection />
+      <Game />
     </>
   )
 }

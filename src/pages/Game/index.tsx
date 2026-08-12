@@ -59,7 +59,7 @@ function saveRecent(items: string[]) {
   localStorage.setItem(RECENT_KEY, JSON.stringify(items))
 }
 
-export function GameSection() {
+export function Game() {
   const { t } = useTranslation()
   const isMobile = useIsMobile()
   const [activeCategory, setActiveCategory] = useState('lobby')
