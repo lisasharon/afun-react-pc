@@ -1,5 +1,7 @@
+'use client'
+
 import { useEffect, useRef, useState } from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
+import { usePathname } from 'next/navigation'
 import { AuthModal, type AuthMode } from '@/components/AuthModal'
 import { Sidebar } from '@/components/Sidebar'
 import { Header } from '@/components/Header'
@@ -15,8 +17,8 @@ import type { BetSlipItem } from '@/types/bet'
 import { countUnread, type MessageItem, type MessageType } from '@/types/message'
 import './index.css'
 
-export function MainLayout() {
-  const location = useLocation()
+export function MainLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
   const pageRef = useRef<HTMLElement>(null)
   const isMobile = useIsMobile()
   const [sidebarExpanded, setSidebarExpanded] = useState(true)
@@ -37,7 +39,7 @@ export function MainLayout() {
     setMessagesOpen(false)
     setBetSlipOpen(false)
     setAuthMode(null)
-  }, [location.pathname, isMobile])
+  }, [pathname, isMobile])
 
   const notifyUnread = countUnread(messages)
   const betSlipCount = betItems.length
@@ -73,10 +75,10 @@ export function MainLayout() {
   const clearBets = () => setBetItems([])
 
   const panelOpen = messagesOpen || betSlipOpen
-  const isProfileRoute = location.pathname.startsWith('/profile')
-  const isBrowseRoute = location.pathname.startsWith('/browse')
-  const isSportsRoute = location.pathname.startsWith('/sports')
-  const isPromoRoute = location.pathname.startsWith('/promotion')
+  const isProfileRoute = pathname.startsWith('/profile')
+  const isBrowseRoute = pathname.startsWith('/browse')
+  const isSportsRoute = pathname.startsWith('/sports')
+  const isPromoRoute = pathname.startsWith('/promotion')
   const showHeader = !(isMobile && isProfileRoute)
   const showFooter =
     !isMobile || (!isProfileRoute && !isBrowseRoute && !isSportsRoute && !isPromoRoute)
@@ -121,7 +123,7 @@ export function MainLayout() {
           ref={pageRef}
         >
           <div className="main-layout__page-body">
-            <Outlet />
+            {children}
           </div>
           {showFooter && <Footer />}
         </main>

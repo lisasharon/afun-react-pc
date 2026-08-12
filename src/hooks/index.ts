@@ -1,1 +1,1 @@
-export { useIsMobile, useMediaQuery } from './useMediaQuery'
+export { useIsMobile, useMediaQuery, MobileProvider } from './useMediaQuery'

@@ -1,6 +1,9 @@
+'use client'
+
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { usePathname, useRouter } from 'next/navigation'
+import { NavLink } from '@/components/NavLink'
 import { Icon } from '@/components/Icon'
 import { useIsMobile } from '@/hooks'
 import { formatDateTime } from '@/utils/format'
@@ -58,13 +61,13 @@ const languages: { code: AppLang; labelKey: 'sidebar.langZh' | 'sidebar.langEn' 
 
 export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
   const { t, i18n } = useTranslation()
-  const location = useLocation()
-  const navigate = useNavigate()
+  const pathname = usePathname()
+  const router = useRouter()
   const isMobile = useIsMobile()
   const showFullMenu = expanded || isMobile
   const [now, setNow] = useState(() => new Date())
   const [mode, setMode] = useState<SidebarMode>(
-    location.pathname.startsWith('/sports') ? 'sports' : 'casino',
+    pathname.startsWith('/sports') ? 'sports' : 'casino',
   )
   const [activeCollapsed, setActiveCollapsed] = useState('lobby')
   const [langOpen, setLangOpen] = useState(false)
@@ -76,12 +79,12 @@ export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
   }, [])
 
   useEffect(() => {
-    setMode(location.pathname.startsWith('/sports') ? 'sports' : 'casino')
-  }, [location.pathname])
+    setMode(pathname.startsWith('/sports') ? 'sports' : 'casino')
+  }, [pathname])
 
   const switchMode = (next: SidebarMode) => {
     setMode(next)
-    navigate(next === 'sports' ? '/sports' : '/')
+    router.push(next === 'sports' ? '/sports' : '/')
   }
 
   useEffect(() => {
@@ -107,7 +110,8 @@ export function Sidebar({ expanded, onToggle, onClose }: SidebarProps) {
     if (isMobile) onClose()
   }
 
-  const inviteLink = `${window.location.origin}/invite`
+  const inviteLink =
+    typeof window === 'undefined' ? '/invite' : `${window.location.origin}/invite`
 
   const copyInviteLink = () => {
     void copyText(inviteLink, t('common.copySuccess'), t('common.copyFailed'))

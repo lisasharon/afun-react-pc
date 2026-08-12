@@ -8,6 +8,7 @@ export const SUPPORTED_LANGS = ['zh-CN', 'en'] as const
 export type AppLang = (typeof SUPPORTED_LANGS)[number]
 
 function getInitialLang(): AppLang {
+  if (typeof window === 'undefined') return 'zh-CN'
   const saved = localStorage.getItem(LANG_STORAGE_KEY)
   if (saved === 'zh-CN' || saved === 'en') return saved
   return 'zh-CN'
@@ -25,11 +26,12 @@ void i18n.use(initReactI18next).init({
   },
 })
 
-i18n.on('languageChanged', (lng) => {
-  localStorage.setItem(LANG_STORAGE_KEY, lng)
-  document.documentElement.lang = lng === 'en' ? 'en' : 'zh-CN'
-})
-
-document.documentElement.lang = i18n.language === 'en' ? 'en' : 'zh-CN'
+if (typeof window !== 'undefined') {
+  i18n.on('languageChanged', (lng) => {
+    localStorage.setItem(LANG_STORAGE_KEY, lng)
+    document.documentElement.lang = lng === 'en' ? 'en' : 'zh-CN'
+  })
+  document.documentElement.lang = i18n.language === 'en' ? 'en' : 'zh-CN'
+}
 
 export default i18n

@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Icon } from '@/components/Icon'
 import './index.css'
@@ -54,8 +53,6 @@ const columns = [
 
 export function Footer() {
   const { t } = useTranslation()
-  const [oddsOpen, setOddsOpen] = useState(false)
-  const [oddsFormat, setOddsFormat] = useState('decimal')
 
   return (
     <footer className="site-footer">

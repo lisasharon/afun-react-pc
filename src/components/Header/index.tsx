@@ -1,5 +1,7 @@
+'use client'
+
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import type { AuthMode } from '@/components/AuthModal'
 import { Icon } from '@/components/Icon'
 import { AUTH } from '@/mock/auth'
@@ -71,7 +73,7 @@ export function Header({
               <span className="balance-amount">{AUTH.balance}</span>
             </button>
             <Link
-              to="/profile/deposit"
+              href="/profile/deposit"
               className="deposit-plus"
               aria-label={t('header.deposit')}
             >
@@ -139,7 +141,7 @@ export function Header({
             >
               <Icon name="search" size={20} />
             </button>
-            <Link to="/profile" className="icon-btn" aria-label={t('common.profile')}>
+            <Link href="/profile" className="icon-btn" aria-label={t('common.profile')}>
               <Icon name="user" size={20} />
             </Link>
             <button

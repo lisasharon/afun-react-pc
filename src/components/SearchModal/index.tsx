@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useRef, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
@@ -56,7 +58,7 @@ export function SearchModal({
     return () => window.removeEventListener('keydown', onKey)
   }, [open, onClose])
 
-  if (!open) return null
+  if (!open || typeof document === 'undefined') return null
 
   const clearInput = () => {
     if (query) {

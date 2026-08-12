@@ -1,6 +1,7 @@
 const RECENT_MAX = 10
 
 export function loadRecentSearches(key: string, fallback: string[] = []): string[] {
+  if (typeof window === 'undefined') return fallback
   try {
     const raw = localStorage.getItem(key)
     if (!raw) return fallback
@@ -13,6 +14,7 @@ export function loadRecentSearches(key: string, fallback: string[] = []): string
 }
 
 export function saveRecentSearches(key: string, items: string[]) {
+  if (typeof window === 'undefined') return
   localStorage.setItem(key, JSON.stringify(items.slice(0, RECENT_MAX)))
 }
 

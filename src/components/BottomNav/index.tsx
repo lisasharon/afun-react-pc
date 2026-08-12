@@ -1,4 +1,6 @@
-import { NavLink } from 'react-router-dom'
+'use client'
+
+import { NavLink } from '@/components/NavLink'
 import { useTranslation } from 'react-i18next'
 import { Icon } from '@/components/Icon'
 import { AUTH } from '@/mock/auth'
