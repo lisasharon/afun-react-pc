@@ -1,0 +1,182 @@
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  padding: 16px;
+}
+
+.profile-panel-button {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 4px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background-color: #05080a;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: background 0.15s, color 0.15s;
+}
+
+.profile-panel-button:hover {
+  color: var(--text);
+}
+
+.profile-panel-button.active {
+  background: var(--green);
+  color: #0a120c;
+  font-weight: 600;
+}
+
+.settings-body {
+  flex: 1;
+  min-height: 0;
+  padding: 8px 16px 20px;
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 560px;
+}
+
+.settings-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.settings-field__label {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.settings-field__label em {
+  color: #ef4444;
+  font-style: normal;
+}
+
+.settings-field__control {
+  position: relative;
+}
+
+.settings-field__input {
+  display: block;
+  width: 100%;
+  height: 40px;
+  padding: 0 40px 0 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.settings-form > .settings-field > .settings-field__input {
+  padding-right: 12px;
+}
+
+.settings-field__input::placeholder {
+  color: var(--text-dim);
+}
+
+.settings-field__input:focus {
+  border-color: var(--green);
+}
+
+.settings-field__eye {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.settings-field__eye:hover {
+  color: var(--text);
+}
+
+.settings-forgot {
+  align-self: flex-end;
+  margin: -4px 0 16px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.settings-forgot:hover {
+  color: var(--text);
+}
+
+.settings-submit {
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #4adf5a 0%, var(--green) 55%, #8be05a 100%);
+  color: #0a120c;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.settings-submit:active {
+  transform: scale(0.99);
+}
+
+.settings-code-row {
+  display: flex;
+  gap: 10px;
+}
+
+.settings-code-row .settings-field__input {
+  flex: 1;
+  min-width: 0;
+  padding-right: 12px;
+}
+
+.settings-code-btn {
+  flex-shrink: 0;
+  min-width: 108px;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-hover);
+  color: var(--green);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.settings-code-btn:hover:not(:disabled) {
+  border-color: var(--green);
+}
+
+.settings-code-btn:disabled {
+  color: var(--text-dim);
+  cursor: not-allowed;
+}
+
+@media (max-width: 960px) {
+  .settings-form {
+    max-width: none;
+  }
+
+  .settings-field__input,
+  .settings-code-btn,
+  .settings-submit {
+    height: 44px;
+  }
+}
