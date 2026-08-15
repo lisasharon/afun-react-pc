@@ -1,0 +1,159 @@
+.wallet-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 16px;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.wallet-modal__card {
+  width: min(420px, 100%);
+  border-radius: 12px;
+  background: #1b252d;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+}
+
+.wallet-modal__header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+  padding: 0 48px;
+  border-bottom: 1px solid var(--border);
+}
+
+.wallet-modal__tabs {
+  display: flex;
+  gap: 6px;
+}
+
+.wallet-modal__tab {
+  padding: 7px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.wallet-modal__tab:hover {
+  color: var(--text);
+}
+
+.wallet-modal__tab.active {
+  background: var(--green);
+  color: #0a120c;
+}
+
+.wallet-modal__close {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  border-radius: 8px;
+}
+
+.wallet-modal__close:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.wallet-modal__body {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 24px 24px;
+}
+
+.wallet-modal__balance {
+  margin: 0 0 16px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.wallet-modal__balance strong {
+  margin-left: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.wallet-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.wallet-modal__field em {
+  color: #ef4444;
+  font-style: normal;
+}
+
+.wallet-modal__input {
+  width: 100%;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+}
+
+.wallet-modal__input:focus {
+  border-color: var(--green);
+}
+
+.wallet-modal__quick {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.wallet-modal__chip {
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.wallet-modal__chip:hover {
+  color: var(--text);
+}
+
+.wallet-modal__chip.active {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.wallet-modal__submit {
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #4adf5a 0%, var(--green) 55%, #8be05a 100%);
+  color: #0a120c;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.wallet-modal__submit:active {
+  transform: scale(0.99);
+}

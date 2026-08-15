@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { AuthModal, type AuthMode } from '@/components/AuthModal'
+import { WalletModal, type WalletTab } from '@/components/WalletModal'
 import { Sidebar } from '@/components/Sidebar'
 import { Header } from '@/components/Header'
 import { BottomNav } from '@/components/BottomNav'
@@ -28,6 +29,8 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
   const [messageTab, setMessageTab] = useState<MessageType>('notify')
   const [betItems, setBetItems] = useState<BetSlipItem[]>(betSlipMock)
   const [authMode, setAuthMode] = useState<AuthMode | null>(null)
+  const [walletTab, setWalletTab] = useState<WalletTab>('deposit')
+  const [walletOpen, setWalletOpen] = useState(false)
 
   useEffect(() => {
     setSidebarExpanded(!isMobile)
@@ -39,6 +42,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
     setMessagesOpen(false)
     setBetSlipOpen(false)
     setAuthMode(null)
+    setWalletOpen(false)
   }, [pathname, isMobile])
 
   const notifyUnread = countUnread(messages)
@@ -116,6 +120,10 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
             betSlipCount={betSlipCount}
             isMobile={isMobile}
             onOpenAuth={setAuthMode}
+            onOpenWallet={(tab = 'deposit') => {
+              setWalletTab(tab)
+              setWalletOpen(true)
+            }}
           />
         )}
         <main
@@ -152,6 +160,12 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
         mode={authMode || 'login'}
         onClose={() => setAuthMode(null)}
         onSwitchMode={setAuthMode}
+      />
+      <WalletModal
+        open={walletOpen}
+        tab={walletTab}
+        onTabChange={setWalletTab}
+        onClose={() => setWalletOpen(false)}
       />
     </div>
   )

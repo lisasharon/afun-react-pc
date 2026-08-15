@@ -70,6 +70,12 @@ const profile = {
   resendAfter: '{{count}}s',
   emptyCode: '请输入验证码',
   codeSent: '验证码已发送',
+  amount: '金额',
+  amountPlaceholder: '请输入金额',
+  emptyAmount: '请输入有效金额',
+  depositSuccess: '存款提交成功',
+  withdrawSuccess: '提款提交成功',
+  withdrawExceed: '提款金额不能超过余额',
 } as const
 
 export default profile

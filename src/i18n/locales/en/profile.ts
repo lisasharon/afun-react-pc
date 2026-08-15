@@ -70,6 +70,12 @@ const profile = {
   resendAfter: '{{count}}s',
   emptyCode: 'Please enter the verification code',
   codeSent: 'Verification code sent',
+  amount: 'Amount',
+  amountPlaceholder: 'Enter amount',
+  emptyAmount: 'Please enter a valid amount',
+  depositSuccess: 'Deposit submitted',
+  withdrawSuccess: 'Withdrawal submitted',
+  withdrawExceed: 'Amount cannot exceed balance',
 } as const
 
 export default profile

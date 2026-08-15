@@ -2,9 +2,12 @@
 
 import { useTranslation } from 'react-i18next'
 import Link from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
 import type { AuthMode } from '@/components/AuthModal'
+import type { WalletTab } from '@/components/WalletModal'
 import { Icon } from '@/components/Icon'
 import { AUTH } from '@/mock/auth'
+import { profilePaths } from '@/views/PersonalCenter/menu'
 import type { MessageType } from '@/types/message'
 import './index.css'
 
@@ -12,6 +15,7 @@ type HeaderProps = {
   onOpenMessages: (tab?: MessageType) => void
   onOpenBetSlip: () => void
   onOpenAuth: (mode: AuthMode) => void
+  onOpenWallet: (tab?: WalletTab) => void
   messagesOpen: boolean
   betSlipOpen: boolean
   notifyUnread?: number
@@ -49,6 +53,7 @@ export function Header({
   onOpenMessages,
   onOpenBetSlip,
   onOpenAuth,
+  onOpenWallet,
   messagesOpen,
   betSlipOpen,
   notifyUnread = 0,
@@ -56,7 +61,18 @@ export function Header({
   isMobile,
 }: HeaderProps) {
   const { t } = useTranslation()
+  const pathname = usePathname()
+  const router = useRouter()
   const loggedIn = AUTH.isLoggedIn
+  const isProfileRoute = pathname.startsWith('/profile')
+
+  const handleDeposit = () => {
+    if (isProfileRoute) {
+      router.push(profilePaths.deposit)
+      return
+    }
+    onOpenWallet('deposit')
+  }
 
   if (isMobile) {
     return (
@@ -129,7 +145,7 @@ export function Header({
             <Icon name="chevron-down" size={14} />
           </button>
 
-          <button type="button" className="deposit-btn">
+          <button type="button" className="deposit-btn" onClick={handleDeposit}>
             {t('header.deposit')}
           </button>
 
