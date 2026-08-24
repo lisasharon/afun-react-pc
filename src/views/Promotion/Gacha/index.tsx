@@ -107,6 +107,7 @@ export function GachaMachine() {
                       background: prize.color,
                       left: `${14 + (index % 4) * 20}%`,
                       top: `${18 + Math.floor(index / 4) * 28}%`,
+                      animationDelay: `${index * 0.06}s`,
                     }}
                   />
                 ))}

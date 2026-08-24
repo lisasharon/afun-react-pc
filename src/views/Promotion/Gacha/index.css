@@ -104,6 +104,19 @@
   animation: gacha-shake 0.9s ease-in-out;
 }
 
+.gacha__machine.is-shaking .gacha__capsule {
+  animation: gacha-ball 0.28s ease-in-out infinite;
+}
+
+.gacha__machine.is-shaking .gacha__capsule:nth-child(2n) {
+  animation-name: gacha-ball-alt;
+  animation-duration: 0.22s;
+}
+
+.gacha__machine.is-shaking .gacha__capsule:nth-child(3n) {
+  animation-duration: 0.34s;
+}
+
 .gacha__dome {
   position: relative;
   height: 148px;
@@ -222,6 +235,41 @@
   }
   80% {
     transform: rotate(4deg);
+  }
+}
+
+@keyframes gacha-ball {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(7px, -11px);
+  }
+  40% {
+    transform: translate(-8px, 5px);
+  }
+  60% {
+    transform: translate(5px, 9px);
+  }
+  80% {
+    transform: translate(-6px, -4px);
+  }
+}
+
+@keyframes gacha-ball-alt {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-9px, 8px);
+  }
+  50% {
+    transform: translate(8px, -7px);
+  }
+  75% {
+    transform: translate(-4px, -10px);
   }
 }
 
