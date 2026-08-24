@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Icon } from '@/components/Icon'
 import { promotionsMock } from '@/mock/promotions'
 import type { PromotionCategory } from '@/types/promotion'
+import { LuckyWheel } from './LuckyWheel'
 import './index.css'
 
 const tabs: { id: PromotionCategory; labelKey: string }[] = [
@@ -30,6 +31,8 @@ export function Promotion() {
         </h1>
         <p>{t('promo.subtitle')}</p>
       </header>
+
+      <LuckyWheel />
 
       <div className="promotion-tabs" role="tablist">
         {tabs.map((tab) => (
