@@ -4,6 +4,7 @@ import { Icon } from '@/components/Icon'
 import { promotionsMock } from '@/mock/promotions'
 import type { PromotionCategory } from '@/types/promotion'
 import { LuckyWheel } from './LuckyWheel'
+import { GachaMachine } from './Gacha'
 import './index.css'
 
 const tabs: { id: PromotionCategory; labelKey: string }[] = [
@@ -33,6 +34,7 @@ export function Promotion() {
       </header>
 
       <LuckyWheel />
+      <GachaMachine />
 
       <div className="promotion-tabs" role="tablist">
         {tabs.map((tab) => (

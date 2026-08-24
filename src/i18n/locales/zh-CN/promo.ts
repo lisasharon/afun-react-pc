@@ -22,6 +22,18 @@ const promo = {
   wheelSpinFailed: '抽奖失败，请稍后再试',
   wheelResult: '抽中',
   wheelExtraChance: '再来一次，次数已返还',
+  gachaEyebrow: '每日扭蛋',
+  gachaTitle: '幸运扭蛋',
+  gachaSubtitle: '奖池由活动接口下发，摇一摇开出今日奖励。',
+  gachaDraw: '扭一次',
+  gachaDrawing: '开蛋中',
+  gachaChances: '剩余 {{count}} 次',
+  gachaNoChance: '今日次数已用完',
+  gachaLoading: '扭蛋机加载中…',
+  gachaLoadFailed: '扭蛋机加载失败',
+  gachaRetry: '重新加载',
+  gachaDrawFailed: '抽取失败，请稍后再试',
+  gachaResult: '开出',
 } as const
 
 export default promo

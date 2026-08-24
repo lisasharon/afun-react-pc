@@ -22,6 +22,18 @@ const promo = {
   wheelSpinFailed: 'Spin failed, please try again',
   wheelResult: 'You won',
   wheelExtraChance: 'Try again — a spin has been returned',
+  gachaEyebrow: 'Daily gacha',
+  gachaTitle: 'Lucky Capsule',
+  gachaSubtitle: 'The prize pool comes from the campaign API. Shake to draw.',
+  gachaDraw: 'Draw',
+  gachaDrawing: 'Opening',
+  gachaChances: '{{count}} draws left',
+  gachaNoChance: 'No draws left today',
+  gachaLoading: 'Loading gacha…',
+  gachaLoadFailed: 'Failed to load gacha',
+  gachaRetry: 'Retry',
+  gachaDrawFailed: 'Draw failed, please try again',
+  gachaResult: 'You got',
 } as const
 
 export default promo
