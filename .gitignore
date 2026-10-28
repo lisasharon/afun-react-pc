@@ -14,6 +14,16 @@ dist-ssr
 out
 *.local
 
+# Secrets and Playwright output
+.env
+.env.*
+!.env.example
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+scripts/betbus-smoke/.auth/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
